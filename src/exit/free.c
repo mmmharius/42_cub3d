@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/03 14:04:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/03 14:21:04 by aberenge         ###   ########.fr       */
+/*   Created: 2025/06/03 14:13:43 by aberenge          #+#    #+#             */
+/*   Updated: 2025/06/03 14:21:27 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#include "cub3d.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include "mlx.h"
-
-typedef struct	s_game
+int	free_game(t_game *game)
 {
-	void	*mlx;
-	void	*mlx_win;
-	int		win_width;
-	int		win_height;
-}	t_game;
-
-int	free_game(t_game *game);
-
-#endif
+	mlx_destroy_window(game->mlx, game->mlx_win);
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
+	exit(0);
+	return (0);
+}
