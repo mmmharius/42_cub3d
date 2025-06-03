@@ -6,7 +6,7 @@
 /*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:04:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/03 14:21:04 by aberenge         ###   ########.fr       */
+/*   Updated: 2025/06/03 14:24:22 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct	s_game
 	int		win_height;
 }	t_game;
 
-int	free_game(t_game *game);
+int		close_hook(t_game *game);
+void	cleanup_game(t_game *game);
 
 #endif

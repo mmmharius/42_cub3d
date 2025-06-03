@@ -1,22 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:13:43 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/03 14:21:27 by aberenge         ###   ########.fr       */
+/*   Updated: 2025/06/03 14:23:47 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	free_game(t_game *game)
+int	close_hook(t_game *game)
 {
-	mlx_destroy_window(game->mlx, game->mlx_win);
-	mlx_destroy_display(game->mlx);
-	free(game->mlx);
+	cleanup_game(game);
 	exit(0);
 	return (0);
+}
+
+void	cleanup_game(t_game *game)
+{
+	if (game->mlx_win)
+	{
+		mlx_destroy_window(game->mlx, game->mlx_win);
+		game->mlx_win = NULL;
+	}
+	if (game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+		game->mlx = NULL;
+	}
 }
