@@ -24,7 +24,7 @@ MLX_FLAGS	= -lXext -lX11 -lm -lz
 SRCDIR		= src
 OBJDIR		= obj
 
-SRCS		= main.c src/exit/exit.c
+SRCS		= main.c src/exit/exit.c src/init.c src/raycasting.c src/render.c src/controls.c
 
 OBJS		= $(SRCS:%.c=$(OBJDIR)/%.o)
 
@@ -37,9 +37,10 @@ $(MLX):
 			$(MAKE) -C $(MLX_DIR)
 
 $(OBJDIR):
-			mkdir -p $(OBJDIR)
+			mkdir -p $(OBJDIR)/src
 
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
+			@mkdir -p $(dir $@)
 			$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)

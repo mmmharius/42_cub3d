@@ -16,8 +16,12 @@ void	init_game(t_game *game)
 {
 	game->mlx = NULL;
 	game->mlx_win = NULL;
-	game->win_width = 300;
-	game->win_height = 300;
+	game->img = NULL;
+	game->addr = NULL;
+	game->win_width = SCREEN_WIDTH;
+	game->win_height = SCREEN_HEIGHT;
+	init_map(game);
+	init_player(game);
 }
 
 void	init_window(t_game *game)
@@ -32,7 +36,16 @@ void	init_window(t_game *game)
 		cleanup_game(game);
 		return ;
 	}
+	game->img = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	if (!game->img)
+	{
+		cleanup_game(game);
+		return ;
+	}
+	game->addr = mlx_get_data_addr(game->img, &game->bits_per_pixel,
+		&game->line_length, &game->endian);
 	mlx_hook(game->mlx_win, 17, 1L << 17, close_hook, game);
+	mlx_hook(game->mlx_win, 2, 1L << 0, key_hook, game);
 }
 
 int	main(int argc, char **argv)
@@ -47,8 +60,10 @@ int	main(int argc, char **argv)
 	(void) argv;
 	init_game(&game);
 	init_window(&game);
-	if (!game.mlx || !game.mlx_win)
+	if (!game.mlx || !game.mlx_win || !game.img)
 		return (1);
+	cast_rays(&game);
+	render_scene(&game);
 	mlx_loop(game.mlx);
 	cleanup_game(&game);
 	return (0);

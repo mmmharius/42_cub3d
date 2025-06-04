@@ -21,6 +21,11 @@ int	close_hook(t_game *game)
 
 void	cleanup_game(t_game *game)
 {
+	if (game->img && game->mlx)
+	{
+		mlx_destroy_image(game->mlx, game->img);
+		game->img = NULL;
+	}
 	if (game->mlx_win)
 	{
 		mlx_destroy_window(game->mlx, game->mlx_win);
