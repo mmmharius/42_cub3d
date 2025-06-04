@@ -58,6 +58,8 @@ void	draw_wall_slice(t_game *game, int x, double distance)
 	int	wall_start;
 	int	wall_end;
 	int	y;
+	int	tex_x;
+	int	tex_y;
 	int	color;
 
 	if (distance == 0)
@@ -65,17 +67,38 @@ void	draw_wall_slice(t_game *game, int x, double distance)
 	wall_height = (int)(SCREEN_HEIGHT / distance * TILE_SIZE);
 	wall_start = (SCREEN_HEIGHT - wall_height) / 2;
 	wall_end = wall_start + wall_height;
-	color = 0xFFFFFF;
-	if (distance > 200)
-		color = 0x808080;
-	else if (distance > 100)
-		color = 0xC0C0C0;
-	y = wall_start;
-	while (y <= wall_end && y < SCREEN_HEIGHT)
+	if (game->wall_data && game->tex_width > 0)
 	{
-		if (y >= 0)
-			put_pixel(game, x, y, color);
-		y++;
+		tex_x = x % game->tex_width;
+		y = wall_start;
+		while (y <= wall_end && y < SCREEN_HEIGHT)
+		{
+			if (y >= 0)
+			{
+				tex_y = (int)((double)(y - wall_start) * game->tex_height / wall_height);
+				if (tex_y >= 0 && tex_y < game->tex_height && tex_x >= 0 && tex_x < game->tex_width)
+				{
+					color = game->wall_data[tex_y * game->tex_width + tex_x];
+					put_pixel(game, x, y, color);
+				}
+			}
+			y++;
+		}
+	}
+	else
+	{
+		color = 0xFFFFFF;
+		if (distance > 200)
+			color = 0x808080;
+		else if (distance > 100)
+			color = 0xC0C0C0;
+		y = wall_start;
+		while (y <= wall_end && y < SCREEN_HEIGHT)
+		{
+			if (y >= 0)
+				put_pixel(game, x, y, color);
+			y++;
+		}
 	}
 }
 

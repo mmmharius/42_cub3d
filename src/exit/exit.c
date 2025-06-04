@@ -21,6 +21,11 @@ int	close_hook(t_game *game)
 
 void	cleanup_game(t_game *game)
 {
+	if (game->wall_texture && game->mlx)
+	{
+		mlx_destroy_image(game->mlx, game->wall_texture);
+		game->wall_texture = NULL;
+	}
 	if (game->img && game->mlx)
 	{
 		mlx_destroy_image(game->mlx, game->img);

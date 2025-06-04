@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "libs/Libft/libft.h"
 
 void	init_game(t_game *game)
 {
@@ -20,6 +21,7 @@ void	init_game(t_game *game)
 	game->addr = NULL;
 	game->win_width = SCREEN_WIDTH;
 	game->win_height = SCREEN_HEIGHT;
+	ft_bzero(game->keys, sizeof(game->keys));
 	init_map(game);
 	init_player(game);
 }
@@ -45,7 +47,9 @@ void	init_window(t_game *game)
 	game->addr = mlx_get_data_addr(game->img, &game->bits_per_pixel,
 		&game->line_length, &game->endian);
 	mlx_hook(game->mlx_win, 17, 1L << 17, close_hook, game);
-	mlx_hook(game->mlx_win, 2, 1L << 0, key_hook, game);
+	mlx_hook(game->mlx_win, 2, 1L << 0, key_press_hook, game);
+	mlx_hook(game->mlx_win, 3, 1L << 1, key_release_hook, game);
+	mlx_loop_hook(game->mlx, game_loop, game);
 }
 
 int	main(int argc, char **argv)
@@ -62,6 +66,7 @@ int	main(int argc, char **argv)
 	init_window(&game);
 	if (!game.mlx || !game.mlx_win || !game.img)
 		return (1);
+	load_textures(&game);
 	cast_rays(&game);
 	render_scene(&game);
 	mlx_loop(game.mlx);

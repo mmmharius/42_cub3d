@@ -40,6 +40,24 @@ void	init_map(t_game *game)
 	}
 }
 
+void	load_textures(t_game *game)
+{
+	int	bpp;
+	int	line_len;
+	int	endian;
+
+	game->wall_texture = mlx_xpm_file_to_image(game->mlx, "wall.xpm", 
+		&game->tex_width, &game->tex_height);
+	if (game->wall_texture)
+	{
+		game->wall_data = (int *)mlx_get_data_addr(game->wall_texture, 
+			&bpp, &line_len, &endian);
+		printf("Texture loaded: %dx%d\n", game->tex_width, game->tex_height);
+	}
+	else
+		printf("Failed to load wall.xpm\n");
+}
+
 void	init_player(t_game *game)
 {
 	game->player.x = 1.5 * TILE_SIZE;

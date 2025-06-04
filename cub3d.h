@@ -54,6 +54,11 @@ typedef struct	s_game
 	int			map[MAP_HEIGHT][MAP_WIDTH];
 	t_player	player;
 	t_ray		rays[RAYS_COUNT];
+	void		*wall_texture;
+	int			*wall_data;
+	int			tex_width;
+	int			tex_height;
+	int			keys[70000];
 }	t_game;
 
 int		close_hook(t_game *game);
@@ -62,8 +67,11 @@ void	init_map(t_game *game);
 void	init_player(t_game *game);
 void	cast_rays(t_game *game);
 void	render_scene(t_game *game);
-int		key_hook(int keycode, t_game *game);
+int		key_press_hook(int keycode, t_game *game);
+int		key_release_hook(int keycode, t_game *game);
+int		game_loop(t_game *game);
 void	put_pixel(t_game *game, int x, int y, int color);
 double	normalize_angle(double angle);
+void	load_textures(t_game *game);
 
 #endif
