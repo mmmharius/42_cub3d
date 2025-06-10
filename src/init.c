@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:00:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/10 13:48:15 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/10 18:04:24 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void	load_textures(t_game *game)
 	int	line_len;
 	int	endian;
 
-	game->wall_texture = mlx_xpm_file_to_image(game->mlx, "wall.xpm", 
+	game->wall_texture = mlx_xpm_file_to_image(game->mlx, "wall_troll.xpm", 
 		&game->tex_width, &game->tex_height);
 	if (game->wall_texture)
 	{
 		game->wall_data = (int *)mlx_get_data_addr(game->wall_texture, 
 			&bpp, &line_len, &endian);
-		// printf("Texture loaded: %dx%d\n", game->tex_width, game->tex_height);
+		printf("Texture loaded: %dx%d\n", game->tex_width, game->tex_height);
 	}
 	else
 		printf("Failed to load wall.xpm\n");

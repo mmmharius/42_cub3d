@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:04:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/10 14:16:06 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/10 18:01:11 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@
 # define SCREEN_HEIGHT 768
 # define FOV 60
 # define RAYS_COUNT SCREEN_WIDTH
-# define NO_TEXTURE
-# define SO_TEXTURE
-# define WE_TEXTURE
-# define EA_TEXTURE
-
 
 typedef struct	s_player
 {
@@ -62,6 +57,10 @@ typedef struct	s_game
 	t_player	player;
 	t_ray		rays[RAYS_COUNT];
 	void		*wall_texture;
+	char		*no_texture;
+	char		*so_texture;
+	char		*we_texture;
+	char		*ea_texture;
 	int			*wall_data;
 	int			tex_width;
 	int			tex_height;
@@ -84,6 +83,7 @@ void	load_textures(t_game *game);
 // parsing
 int    	parsing(char *map, t_game *game);
 int 	check_cub(char *map);
-int    	catch_texture(char *map);
+int    	catch_all(char *map, t_game *game);
+
 
 #endif
