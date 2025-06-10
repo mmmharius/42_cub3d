@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:00:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/04 10:00:00 by aberenge         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:48:15 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	load_textures(t_game *game)
 	{
 		game->wall_data = (int *)mlx_get_data_addr(game->wall_texture, 
 			&bpp, &line_len, &endian);
-		printf("Texture loaded: %dx%d\n", game->tex_width, game->tex_height);
+		// printf("Texture loaded: %dx%d\n", game->tex_width, game->tex_height);
 	}
 	else
 		printf("Failed to load wall.xpm\n");

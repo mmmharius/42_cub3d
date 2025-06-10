@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:04:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/08 17:05:18 by aberenge         ###   ########.fr       */
+/*   Updated: 2025/06/10 14:16:06 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
+# include "libft.h"
+# include "get_next_line.h"
 # include "mlx.h"
 
 # define MAP_WIDTH 8
@@ -25,6 +27,11 @@
 # define SCREEN_HEIGHT 768
 # define FOV 60
 # define RAYS_COUNT SCREEN_WIDTH
+# define NO_TEXTURE
+# define SO_TEXTURE
+# define WE_TEXTURE
+# define EA_TEXTURE
+
 
 typedef struct	s_player
 {
@@ -73,5 +80,10 @@ int		game_loop(t_game *game);
 void	put_pixel(t_game *game, int x, int y, int color);
 double	normalize_angle(double angle);
 void	load_textures(t_game *game);
+
+// parsing
+int    	parsing(char *map, t_game *game);
+int 	check_cub(char *map);
+int    	catch_texture(char *map);
 
 #endif

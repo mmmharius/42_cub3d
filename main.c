@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:03:50 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/03 14:24:26 by aberenge         ###   ########.fr       */
+/*   Updated: 2025/06/10 14:25:03 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ int	main(int argc, char **argv)
 		printf("Error : Cub3d needs a map\n");
 		return (1);
 	}
-	(void) argv;
+	if (parsing(argv[1], &game))
+		return (1);
+	printf("ATTEINT\n");
 	init_game(&game);
 	init_window(&game);
 	if (!game.mlx || !game.mlx_win || !game.img)
