@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:04:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/12 14:29:15 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/12 18:16:52 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include "get_next_line.h"
 # include "mlx.h"
 
-# define MAP_WIDTH 8
+# define MAP_WIDTH 6
 # define MAP_HEIGHT 8
 # define TILE_SIZE 64
 # define SCREEN_WIDTH 1024
@@ -65,6 +65,9 @@ typedef struct	s_game
 
 typedef struct	s_map
 {
+	int			**map;
+	int			width;
+	int			height;
 	char		*no_texture;
 	char		*so_texture;
 	char		*we_texture;
@@ -75,6 +78,11 @@ typedef struct	s_map
 	int			r_sol;
 	int			g_sol;
 	int			b_sol;
+	int			color_plafond;
+	int			color_sol;
+	int			assigned_texture;
+	int			assigned_color;
+	int			assigned_map;
 }	t_map;
 
 int		close_hook(t_game *game);

@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 13:13:49 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/12 15:03:05 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/12 18:44:15 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 
 int	parsing(char *map_path, t_map *map)
 {
+	map->assigned_color = 0;
+	map->assigned_map = 0;
+	map->assigned_texture = 0;
 	if (check_cub(map_path) || catch_all(map_path, map))
 		return (1);
 	else
-		printf("all good\n");
-	return (0);
+		return (0);
 }
 
 int	check_cub(char *map_path)
@@ -38,7 +40,7 @@ int	check_cub(char *map_path)
 	return (1);
 }
 
-static void	assign_texture(char *ligne, t_map *map)
+void	assign_texture(char *ligne, t_map *map)
 {
 	if (ft_strncmp(ligne, "NO ", 3) == 0)
 		map->no_texture = ft_strdup(ligne + 3);
@@ -48,21 +50,20 @@ static void	assign_texture(char *ligne, t_map *map)
 		map->we_texture = ft_strdup(ligne + 3);
 	else if (ft_strncmp(ligne, "EA ", 3) == 0)
 		map->ea_texture = ft_strdup(ligne + 3);
+	
 }
 
-static void	assign_color(char *ligne, t_map *map)
+void	assign_color(char *ligne, t_map *map)
 {
 	char	**color;
 
 	if (ligne[0] == 'F')
 	{
-		color = ft_split(&ligne[2], ",");
+		color = ft_split(&ligne[2], ","); // malloc a free plus tard !!
 		map->r_sol = ft_atoi(color[0]);
 		map->g_sol = ft_atoi(color[1]);
 		map->b_sol = ft_atoi(color[2]);
-		printf("r sol = %d\n", map->r_sol);
-		printf("g sol = %d\n", map->g_sol);
-		printf("b sol = %d\n", map->b_sol);
+		map->color_sol = 1;
 	}
 	else if (ligne[0] == 'C')
 	{
@@ -70,12 +71,44 @@ static void	assign_color(char *ligne, t_map *map)
 		map->r_plafond = ft_atoi(color[0]);
 		map->g_plafond = ft_atoi(color[1]);
 		map->b_plafond = ft_atoi(color[2]);
-		printf("r plafond = %d\n", map->r_plafond);
-		printf("g plafond = %d\n", map->g_plafond);
-		printf("b plafond = %d\n", map->b_plafond);
+		map->color_plafond = 1;
 	}
-	map->b_sol = 1;
-}	
+	if (map->color_plafond && map->color_sol)
+		map->assigned_color = 1;
+}
+
+
+int	is_map_line(char *ligne)
+{
+	int	i;
+
+	i = 0;
+	if (!ligne || ligne[0] == '\n')
+		return (0);
+	while (ligne[i] && ligne[i] != '\n')
+	{
+		if (ligne[i] != '0' && ligne[i] != '1' && ligne[i] != ' ' && 
+			ligne[i] != 'N' && ligne[i] != 'S' && ligne[i] != 'E' && ligne[i] != 'W')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	assign_map(char *ligne, t_map *map)
+{
+	// int i;
+	int len;
+
+	len = ft_strlen(ligne);
+	printf("len avant %d", len);
+	if (ligne[len - 1] == '\n')
+		len--;
+	printf("len apres %d", len);
+	if (len > map->width)
+		map->width = len;
+}
+
 
 int	catch_all(char *map_path, t_map *map)
 {
@@ -87,10 +120,21 @@ int	catch_all(char *map_path, t_map *map)
 		return (0);
 	while ((ligne = get_next_line(fd)) != NULL)
 	{
-		assign_texture(ligne, map);
-		assign_color(ligne, map);
+		if (ligne[0] == '\n')
+		{
+			free(ligne);
+			continue;
+		}
+		if (!map->assigned_texture)
+			assign_texture(ligne, map);
+		if (!map->assigned_color)
+			assign_color(ligne, map);
+		if (map->assigned_color && is_map_line(ligne)) // assigned texture a rajouter 
+			assign_map(ligne, map);
 		free(ligne);
 	}
+	printf("color sol : r:%d g:%d b:%d\n", map->r_sol, map->g_sol, map->b_sol);
+	printf("color pla : r:%d g:%d b:%d\n", map->r_plafond, map->g_plafond, map->b_plafond);
 	close(fd);
 	return (0);
 }
