@@ -13,7 +13,7 @@
 NAME		= CUB3D
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror -g
-INCDIR		= -I. -I./libs/Libft -I./libs/gnl -I./libs/minilibx
+INCDIR		= -I. -I./libs/Libft -I./libs/gnl -I./$(MLX_DIR)
 LIBFT_DIR	= libs/Libft
 GNL_DIR		= libs/gnl
 MLX_DIR		= libs/minilibx
@@ -66,4 +66,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+mac:
+			@$(MAKE) MLX_DIR=libs/minilibx_macos MLX_FLAGS="-framework OpenGL -framework AppKit" all
+
+.PHONY: all clean fclean re mac

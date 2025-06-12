@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:04:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/12 18:16:52 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/13 00:00:34 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include "get_next_line.h"
 # include "mlx.h"
 
-# define MAP_WIDTH 6
+# define MAP_WIDTH 8
 # define MAP_HEIGHT 8
 # define TILE_SIZE 64
 # define SCREEN_WIDTH 1024
