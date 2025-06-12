@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:03:50 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/10 14:25:03 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/12 14:37:26 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ void	init_window(t_game *game)
 int	main(int argc, char **argv)
 {
 	t_game	game;
-
+	t_map	map;
+	
 	if (argc != 2)
 	{
 		printf("Error : Cub3d needs a map\n");
 		return (1);
 	}
-	if (parsing(argv[1], &game))
+	if (parsing(argv[1], &map))
 		return (1);
-	printf("ATTEINT\n");
 	init_game(&game);
 	init_window(&game);
 	if (!game.mlx || !game.mlx_win || !game.img)

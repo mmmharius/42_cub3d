@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:04:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/10 18:01:11 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/12 14:29:15 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,26 @@ typedef struct	s_game
 	int			map[MAP_HEIGHT][MAP_WIDTH];
 	t_player	player;
 	t_ray		rays[RAYS_COUNT];
-	void		*wall_texture;
-	char		*no_texture;
-	char		*so_texture;
-	char		*we_texture;
-	char		*ea_texture;
 	int			*wall_data;
+	void		*wall_texture;
 	int			tex_width;
 	int			tex_height;
 	int			keys[70000];
 }	t_game;
+
+typedef struct	s_map
+{
+	char		*no_texture;
+	char		*so_texture;
+	char		*we_texture;
+	char		*ea_texture;
+	int			r_plafond;
+	int			g_plafond;
+	int			b_plafond;
+	int			r_sol;
+	int			g_sol;
+	int			b_sol;
+}	t_map;
 
 int		close_hook(t_game *game);
 void	cleanup_game(t_game *game);
@@ -81,9 +91,9 @@ double	normalize_angle(double angle);
 void	load_textures(t_game *game);
 
 // parsing
-int    	parsing(char *map, t_game *game);
-int 	check_cub(char *map);
-int    	catch_all(char *map, t_game *game);
+int    	parsing(char *map_path, t_map *map);
+int 	check_cub(char *map_path);
+int    	catch_all(char *map_path, t_map *map);
 
 
 #endif
