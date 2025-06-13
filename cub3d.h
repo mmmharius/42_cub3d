@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:04:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/13 15:57:06 by aberenge         ###   ########.fr       */
+/*   Updated: 2025/06/14 01:09:48 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
+# include <fcntl.h>
+# include <unistd.h>
 # include "libft.h"
 # include "get_next_line.h"
 # include "mlx.h"
@@ -81,7 +83,7 @@ typedef struct	s_game
 
 typedef struct	s_map
 {
-	int			**map;
+	char		**map;
 	int			width;
 	int			height;
 	char		*no_texture;
@@ -127,6 +129,29 @@ void	load_textures(t_game *game);
 int		parsing(char *map_path, t_map *map);
 int 	check_cub(char *map_path);
 int		catch_all(char *map_path, t_map *map);
+void	assign_texture(char *ligne, t_map *map);
+void	assign_color(char *ligne, t_map *map);
+void	assign_map(char *ligne, t_map *map);
+int		is_map_line(char *ligne);
+
+// parsing_test
+void	free_parsing_data(t_map *map);
+void	free_map_array(char **map_array, int height);
+void	init_map_struct(t_map *map);
+int		test_parsing_main(char *map_path);
+int		store_map_data(char *map_path, t_map *map);
+int		count_map_lines(char *map_path);
+char	**allocate_map_array(char *map_path, t_map *map);
+int		find_map_width(char **map_array, int height);
+
+// verif
+int		verify_parsing(t_map *map);
+int		check_texture_files(t_map *map);
+int		check_colors_range(t_map *map);
+int		check_map_characters(char **map_array, int height);
+int		check_map_borders(char **map_array, int height, int width);
+int		check_map_enclosed(char **map_array, int height, int width);
+void	print_map_debug(t_map *map);
 
 void	draw_textured_wall(t_game *game, int x, t_wall_info wall);
 int		get_wall_color(double distance);

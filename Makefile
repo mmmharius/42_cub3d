@@ -27,7 +27,7 @@ OBJDIR		= obj
 SRCS		= main.c src/exit/exit.c src/init.c \
 				src/raycasting/raycasting.c src/raycasting/render.c src/raycasting/render_utils.c \
 				src/player/controls.c src/player/controls_utils.c \
-			  src/parsing/parsing.c libs/gnl/get_next_line.c
+			  src/parsing/parsing.c src/parsing/parsing_utils.c src/parsing/verif.c libs/gnl/get_next_line.c
 
 OBJS		= $(SRCS:%.c=$(OBJDIR)/%.o)
 

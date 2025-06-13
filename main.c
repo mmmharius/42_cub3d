@@ -52,6 +52,27 @@ void	init_window(t_game *game)
 	mlx_loop_hook(game->mlx, game_loop, game);
 }
 
+void	print_parsing_info(t_map *map)
+{
+	int i;
+	
+	printf("Textures:\n");
+	printf("  NO: %s", map->no_texture ? map->no_texture : "NULL");
+	printf("  SO: %s", map->so_texture ? map->so_texture : "NULL");
+	printf("  WE: %s", map->we_texture ? map->we_texture : "NULL");
+	printf("  EA: %s", map->ea_texture ? map->ea_texture : "NULL");
+	printf("Map (%dx%d):\n", map->width, map->height);
+	if (map->map)
+	{
+		i = 0;
+		while (i < map->height)
+		{
+			printf("%s\n", map->map[i]);
+			i++;
+		}
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_game	game;
@@ -64,6 +85,9 @@ int	main(int argc, char **argv)
 	}
 	if (parsing(argv[1], &map))
 		return (1);
+	
+	print_parsing_info(&map);
+	
 	init_game(&game);
 	init_window(&game);
 	if (!game.mlx || !game.mlx_win || !game.img)
