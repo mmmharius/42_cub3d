@@ -6,7 +6,7 @@
 /*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:04:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/13 00:00:34 by aberenge         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:57:06 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,22 @@
 # define SCREEN_HEIGHT 768
 # define FOV 60
 # define RAYS_COUNT SCREEN_WIDTH
+
+#define KEY_W 119
+#define KEY_S 115
+#define KEY_A 97
+#define KEY_D 100
+#define KEY_LEFT 65361
+#define KEY_RIGHT 65363
+#define KEY_ESC 65307
+
+#define KEY_W_MAC 13
+#define KEY_S_MAC 1
+#define KEY_A_MAC 0
+#define KEY_D_MAC 2
+#define KEY_LEFT_MAC 123
+#define KEY_RIGHT_MAC 124
+#define KEY_ESC_MAC 53
 
 typedef struct	s_player
 {
@@ -85,6 +101,13 @@ typedef struct	s_map
 	int			assigned_map;
 }	t_map;
 
+typedef struct s_wall_info
+{
+	int	height;
+	int	start;
+	int	end;
+}	t_wall_info;
+
 int		close_hook(t_game *game);
 void	cleanup_game(t_game *game);
 void	init_map(t_game *game);
@@ -93,15 +116,20 @@ void	cast_rays(t_game *game);
 void	render_scene(t_game *game);
 int		key_press_hook(int keycode, t_game *game);
 int		key_release_hook(int keycode, t_game *game);
+int		is_valid_key(int keycode);
+int		can_move(t_game *game, double new_x, double new_y);
 int		game_loop(t_game *game);
 void	put_pixel(t_game *game, int x, int y, int color);
 double	normalize_angle(double angle);
 void	load_textures(t_game *game);
 
 // parsing
-int    	parsing(char *map_path, t_map *map);
+int		parsing(char *map_path, t_map *map);
 int 	check_cub(char *map_path);
-int    	catch_all(char *map_path, t_map *map);
+int		catch_all(char *map_path, t_map *map);
+
+void	draw_textured_wall(t_game *game, int x, t_wall_info wall);
+int		get_wall_color(double distance);
 
 
 #endif

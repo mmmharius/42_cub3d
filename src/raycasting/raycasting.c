@@ -6,7 +6,7 @@
 /*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:00:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/08 17:05:22 by aberenge         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:48:19 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ double	cast_single_ray(t_game *game, double ray_angle)
 		if (distance > 1000)
 			break ;
 	}
-	return (sqrt((x - game->player.x) * (x - game->player.x) +
-		(y - game->player.y) * (y - game->player.y)));
+	return (sqrt((x - game->player.x) * (x - game->player.x)
+			+ (y - game->player.y) * (y - game->player.y)));
 }
 
 void	cast_rays(t_game *game)
@@ -63,8 +63,8 @@ void	cast_rays(t_game *game)
 	i = 0;
 	while (i < RAYS_COUNT)
 	{
-		ray_angle = game->player.angle - (FOV * M_PI / 180.0) / 2 +
-			i * angle_step;
+		ray_angle = game->player.angle - (FOV * M_PI / 180.0) / 2
+			+ i * angle_step;
 		ray_angle = normalize_angle(ray_angle);
 		game->rays[i].angle = ray_angle;
 		game->rays[i].distance = cast_single_ray(game, ray_angle);

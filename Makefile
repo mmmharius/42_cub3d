@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mpapin <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: aberenge <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 14:30:00 by aberenge          #+#    #+#              #
-#    Updated: 2025/06/12 17:47:53 by mpapin           ###   ########.fr        #
+#    Updated: 2025/06/13 15:58:21 by aberenge         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,11 @@ MLX_FLAGS	= -lXext -lX11 -lm -lz
 SRCDIR		= src
 OBJDIR		= obj
 
-SRCS		= main.c src/exit/exit.c src/init.c src/raycasting.c src/render.c src/controls.c \
+SRCS		= main.c src/exit/exit.c src/init.c \
+				src/raycasting/raycasting.c src/raycasting/render.c src/raycasting/render_utils.c \
+				src/player/controls.c src/player/controls_utils.c \
 			  src/parsing/parsing.c libs/gnl/get_next_line.c
-			  
+
 OBJS		= $(SRCS:%.c=$(OBJDIR)/%.o)
 
 all: $(LIBFT) $(MLX) $(NAME)
