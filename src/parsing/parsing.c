@@ -41,21 +41,40 @@ int	check_cub(char *map_path)
 
 void	assign_texture(char *ligne, t_map *map)
 {
+	char	*texture_path;
+	int		len;
+
 	if (ft_strncmp(ligne, "NO ", 3) == 0)
 	{
-		map->no_texture = ft_strdup(ligne + 3);
+		texture_path = ft_strdup(ligne + 3);
+		len = ft_strlen(texture_path);
+		if (len > 0 && texture_path[len - 1] == '\n')
+			texture_path[len - 1] = '\0';
+		map->no_texture = texture_path;
 	}
 	else if (ft_strncmp(ligne, "SO ", 3) == 0)
 	{
-		map->so_texture = ft_strdup(ligne + 3);
+		texture_path = ft_strdup(ligne + 3);
+		len = ft_strlen(texture_path);
+		if (len > 0 && texture_path[len - 1] == '\n')
+			texture_path[len - 1] = '\0';
+		map->so_texture = texture_path;
 	}
 	else if (ft_strncmp(ligne, "WE ", 3) == 0)
 	{
-		map->we_texture = ft_strdup(ligne + 3);
+		texture_path = ft_strdup(ligne + 3);
+		len = ft_strlen(texture_path);
+		if (len > 0 && texture_path[len - 1] == '\n')
+			texture_path[len - 1] = '\0';
+		map->we_texture = texture_path;
 	}
 	else if (ft_strncmp(ligne, "EA ", 3) == 0)
 	{
-		map->ea_texture = ft_strdup(ligne + 3);
+		texture_path = ft_strdup(ligne + 3);
+		len = ft_strlen(texture_path);
+		if (len > 0 && texture_path[len - 1] == '\n')
+			texture_path[len - 1] = '\0';
+		map->ea_texture = texture_path;
 	}
 	if (map->no_texture && map->so_texture && map->we_texture && map->ea_texture)
 	{

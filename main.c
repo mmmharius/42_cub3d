@@ -13,7 +13,7 @@
 #include "cub3d.h"
 #include "libs/Libft/libft.h"
 
-void	init_game(t_game *game)
+void	init_game(t_game *game, t_map *map)
 {
 	game->mlx = NULL;
 	game->mlx_win = NULL;
@@ -21,6 +21,15 @@ void	init_game(t_game *game)
 	game->addr = NULL;
 	game->win_width = SCREEN_WIDTH;
 	game->win_height = SCREEN_HEIGHT;
+	game->map_data = map;
+	game->no_texture = NULL;
+	game->so_texture = NULL;
+	game->we_texture = NULL;
+	game->ea_texture = NULL;
+	game->no_tex_data = NULL;
+	game->so_tex_data = NULL;
+	game->we_tex_data = NULL;
+	game->ea_tex_data = NULL;
 	ft_bzero(game->keys, sizeof(game->keys));
 	init_map(game);
 	init_player(game);
@@ -88,11 +97,11 @@ int	main(int argc, char **argv)
 	
 	print_parsing_info(&map);
 	
-	init_game(&game);
+	init_game(&game, &map);
 	init_window(&game);
 	if (!game.mlx || !game.mlx_win || !game.img)
 		return (1);
-	load_textures(&game);
+	load_map_textures(&game, &map);
 	cast_rays(&game);
 	render_scene(&game);
 	mlx_loop(game.mlx);

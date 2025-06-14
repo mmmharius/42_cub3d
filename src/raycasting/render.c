@@ -16,14 +16,28 @@ void	draw_ceiling_and_floor(t_game *game)
 {
 	int	x;
 	int	y;
+	int	ceiling_color;
+	int	floor_color;
 
+	if (game->map_data)
+	{
+		ceiling_color = rgb_to_color(game->map_data->r_plafond, 
+			game->map_data->g_plafond, game->map_data->b_plafond);
+		floor_color = rgb_to_color(game->map_data->r_sol, 
+			game->map_data->g_sol, game->map_data->b_sol);
+	}
+	else
+	{
+		ceiling_color = 0x87CEEB;
+		floor_color = 0x8B4513;
+	}
 	y = 0;
 	while (y < SCREEN_HEIGHT / 2)
 	{
 		x = 0;
 		while (x < SCREEN_WIDTH)
 		{
-			put_pixel(game, x, y, 0x87CEEB);
+			put_pixel(game, x, y, ceiling_color);
 			x++;
 		}
 		y++;
@@ -33,7 +47,7 @@ void	draw_ceiling_and_floor(t_game *game)
 		x = 0;
 		while (x < SCREEN_WIDTH)
 		{
-			put_pixel(game, x, y, 0x8B4513);
+			put_pixel(game, x, y, floor_color);
 			x++;
 		}
 		y++;
@@ -52,7 +66,7 @@ static t_wall_info	calc_wall_dimensions(double distance)
 	return (wall);
 }
 
-static void	draw_solid_wall(t_game *game, int x, t_wall_info wall, int color)
+void	draw_solid_wall(t_game *game, int x, t_wall_info wall, int color)
 {
 	int	y;
 
@@ -65,13 +79,13 @@ static void	draw_solid_wall(t_game *game, int x, t_wall_info wall, int color)
 	}
 }
 
-void	draw_wall_slice(t_game *game, int x, double distance)
+void	draw_wall_slice(t_game *game, int x, double distance, int wall_direction)
 {
 	t_wall_info	wall;
 
 	wall = calc_wall_dimensions(distance);
-	if (game->wall_data && game->tex_width > 0)
-		draw_textured_wall(game, x, wall);
+	if (game->map_data)
+		draw_directional_textured_wall(game, x, wall, wall_direction);
 	else
 		draw_solid_wall(game, x, wall, get_wall_color(distance));
 }
@@ -84,7 +98,7 @@ void	render_scene(t_game *game)
 	x = 0;
 	while (x < RAYS_COUNT)
 	{
-		draw_wall_slice(game, x, game->rays[x].distance);
+		draw_wall_slice(game, x, game->rays[x].distance, game->rays[x].wall_direction);
 		x++;
 	}
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img, 0, 0);

@@ -46,40 +46,17 @@
 #define KEY_RIGHT_MAC 124
 #define KEY_ESC_MAC 53
 
+#define WALL_NORTH 0
+#define WALL_SOUTH 1
+#define WALL_WEST 2
+#define WALL_EAST 3
+
 typedef struct	s_player
 {
 	double	x;
 	double	y;
 	double	angle;
 }	t_player;
-
-typedef struct	s_ray
-{
-	double	angle;
-	double	distance;
-	int		hit_vertical;
-}	t_ray;
-
-typedef struct	s_game
-{
-	void		*mlx;
-	void		*mlx_win;
-	void		*img;
-	char		*addr;
-	int			bits_per_pixel;
-	int			line_length;
-	int			endian;
-	int			win_width;
-	int			win_height;
-	int			map[MAP_HEIGHT][MAP_WIDTH];
-	t_player	player;
-	t_ray		rays[RAYS_COUNT];
-	int			*wall_data;
-	void		*wall_texture;
-	int			tex_width;
-	int			tex_height;
-	int			keys[70000];
-}	t_game;
 
 typedef struct	s_map
 {
@@ -103,6 +80,52 @@ typedef struct	s_map
 	int			assigned_map;
 }	t_map;
 
+typedef struct	s_ray
+{
+	double	angle;
+	double	distance;
+	int		hit_vertical;
+	int		wall_direction;
+}	t_ray;
+
+typedef struct	s_game
+{
+	void		*mlx;
+	void		*mlx_win;
+	void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	int			win_width;
+	int			win_height;
+	char		map[MAP_HEIGHT][MAP_WIDTH];
+	t_player	player;
+	t_ray		rays[RAYS_COUNT];
+	int			*wall_data;
+	void		*wall_texture;
+	int			tex_width;
+	int			tex_height;
+	int			keys[70000];
+	t_map		*map_data;
+	void		*no_texture;
+	void		*so_texture;
+	void		*we_texture;
+	void		*ea_texture;
+	int			*no_tex_data;
+	int			*so_tex_data;
+	int			*we_tex_data;
+	int			*ea_tex_data;
+	int			no_tex_width;
+	int			no_tex_height;
+	int			so_tex_width;
+	int			so_tex_height;
+	int			we_tex_width;
+	int			we_tex_height;
+	int			ea_tex_width;
+	int			ea_tex_height;
+}	t_game;
+
 typedef struct s_wall_info
 {
 	int	height;
@@ -114,6 +137,7 @@ int		close_hook(t_game *game);
 void	cleanup_game(t_game *game);
 void	init_map(t_game *game);
 void	init_player(t_game *game);
+void	init_game(t_game *game, t_map *map);
 void	cast_rays(t_game *game);
 void	render_scene(t_game *game);
 int		key_press_hook(int keycode, t_game *game);
@@ -124,6 +148,8 @@ int		game_loop(t_game *game);
 void	put_pixel(t_game *game, int x, int y, int color);
 double	normalize_angle(double angle);
 void	load_textures(t_game *game);
+void	load_map_textures(t_game *game, t_map *map);
+int		rgb_to_color(int r, int g, int b);
 
 // parsing
 int		parsing(char *map_path, t_map *map);
@@ -155,6 +181,9 @@ void	print_map_debug(t_map *map);
 
 void	draw_textured_wall(t_game *game, int x, t_wall_info wall);
 int		get_wall_color(double distance);
+void	draw_directional_textured_wall(t_game *game, int x, t_wall_info wall, int wall_direction);
+int		get_texture_for_direction(t_game *game, int wall_direction, int **tex_data, int *tex_width, int *tex_height);
+void	draw_solid_wall(t_game *game, int x, t_wall_info wall, int color);
 
 
 #endif
