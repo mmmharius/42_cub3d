@@ -35,6 +35,10 @@ double	cast_single_ray(t_game *game, double ray_angle, int *wall_dir)
 	double	x;
 	double	y;
 	double	distance;
+	int		wall_x;
+	int		wall_y;
+	double	rel_x;
+	double	rel_y;
 
 	delta_x = cos(ray_angle);
 	delta_y = sin(ray_angle);
@@ -49,19 +53,23 @@ double	cast_single_ray(t_game *game, double ray_angle, int *wall_dir)
 		if (distance > 1000)
 			break ;
 	}
-	if (fabs(delta_x) > fabs(delta_y))
+	wall_x = (int)(x / TILE_SIZE);
+	wall_y = (int)(y / TILE_SIZE);
+	rel_x = x - (wall_x * TILE_SIZE + TILE_SIZE / 2);
+	rel_y = y - (wall_y * TILE_SIZE + TILE_SIZE / 2);
+	if (fabs(rel_x) > fabs(rel_y))
 	{
-		if (delta_x > 0)
-			*wall_dir = WALL_EAST;
-		else
+		if (rel_x > 0)
 			*wall_dir = WALL_WEST;
+		else
+			*wall_dir = WALL_EAST;
 	}
 	else
 	{
-		if (delta_y > 0)
-			*wall_dir = WALL_SOUTH;
-		else
+		if (rel_y > 0)
 			*wall_dir = WALL_NORTH;
+		else
+			*wall_dir = WALL_SOUTH;
 	}
 	return (sqrt((x - game->player.x) * (x - game->player.x)
 			+ (y - game->player.y) * (y - game->player.y)));

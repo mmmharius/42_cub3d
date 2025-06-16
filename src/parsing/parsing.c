@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 13:13:49 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/14 01:51:23 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/14 14:59:54 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	assign_map(char *ligne, t_map *map)
 		{
 			map->height = line_count;
 			map->width = 0;
-			
+
 			i = 0;
 			while (i < line_count)
 			{
@@ -139,18 +139,18 @@ void	assign_map(char *ligne, t_map *map)
 				}
 				i++;
 			}
-			
+
 			map->map = malloc(sizeof(char *) * map->height);
 			if (!map->map)
 				return;
-			
+
 			i = 0;
 			while (i < map->height)
 			{
 				map->map[i] = temp_map[i];
 				i++;
 			}
-			
+
 			free(temp_map);
 			map->assigned_map = 1;
 		}
@@ -161,7 +161,7 @@ void	assign_map(char *ligne, t_map *map)
 	{
 		return;
 	}
-	
+
 	if (first_map_line)
 	{
 		temp_map = malloc(sizeof(char *) * 1000);
@@ -169,11 +169,11 @@ void	assign_map(char *ligne, t_map *map)
 			return;
 		first_map_line = 0;
 	}
-	
+
 	temp_map[line_count] = ft_strdup(ligne);
 	if (temp_map[line_count] && temp_map[line_count][ft_strlen(temp_map[line_count]) - 1] == '\n')
 		temp_map[line_count][ft_strlen(temp_map[line_count]) - 1] = '\0';
-	
+
 	line_count++;
 }
 
@@ -189,7 +189,7 @@ int	is_map_line(char *ligne)
 	}
 	while (ligne[i] && ligne[i] != '\n')
 	{
-		if (ligne[i] != '0' && ligne[i] != '1' && ligne[i] != ' ' && 
+		if (ligne[i] != '0' && ligne[i] != '1' && ligne[i] != ' ' &&
 			ligne[i] != 'N' && ligne[i] != 'S' && ligne[i] != 'E' && ligne[i] != 'W')
 		{
 			return (0);
@@ -260,21 +260,8 @@ int	verify_parsing(t_map *map)
 	printf("Ceiling RGB: %d,%d,%d\n", map->r_plafond, map->g_plafond, map->b_plafond);
 	map_array = (char **)map->map;
 	if (check_map_characters(map_array, map->height))
-	{
 		return (1);
-	}
-	if (check_map_borders(map_array, map->height, map->width))
-	{
+	if (check_map_enclosed(map_array, map->height, map->width) || check_map_borders(map_array, map->height, map->width))
 		return (1);
-	}
-	if (check_map_enclosed(map_array, map->height, map->width))
-	{
-		return (1);
-	}
 	return (0);
 }
-
-
-
-
-
