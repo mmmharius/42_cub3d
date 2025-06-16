@@ -22,6 +22,10 @@ void	init_game(t_game *game, t_map *map)
 	game->win_width = SCREEN_WIDTH;
 	game->win_height = SCREEN_HEIGHT;
 	game->map_data = map;
+	game->wall_texture = NULL;
+	game->wall_data = NULL;
+	game->tex_width = 0;
+	game->tex_height = 0;
 	game->no_texture = NULL;
 	game->so_texture = NULL;
 	game->we_texture = NULL;
@@ -30,6 +34,14 @@ void	init_game(t_game *game, t_map *map)
 	game->so_tex_data = NULL;
 	game->we_tex_data = NULL;
 	game->ea_tex_data = NULL;
+	game->no_tex_width = 0;
+	game->no_tex_height = 0;
+	game->so_tex_width = 0;
+	game->so_tex_height = 0;
+	game->we_tex_width = 0;
+	game->we_tex_height = 0;
+	game->ea_tex_width = 0;
+	game->ea_tex_height = 0;
 	ft_bzero(game->keys, sizeof(game->keys));
 	init_map(game);
 	init_player(game);

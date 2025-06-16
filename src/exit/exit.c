@@ -21,17 +21,39 @@ int	close_hook(t_game *game)
 
 void	cleanup_game(t_game *game)
 {
+	if (!game)
+		return ;
 	if (game->wall_texture && game->mlx)
 	{
 		mlx_destroy_image(game->mlx, game->wall_texture);
 		game->wall_texture = NULL;
+	}
+	if (game->no_texture && game->mlx)
+	{
+		mlx_destroy_image(game->mlx, game->no_texture);
+		game->no_texture = NULL;
+	}
+	if (game->so_texture && game->mlx)
+	{
+		mlx_destroy_image(game->mlx, game->so_texture);
+		game->so_texture = NULL;
+	}
+	if (game->we_texture && game->mlx)
+	{
+		mlx_destroy_image(game->mlx, game->we_texture);
+		game->we_texture = NULL;
+	}
+	if (game->ea_texture && game->mlx)
+	{
+		mlx_destroy_image(game->mlx, game->ea_texture);
+		game->ea_texture = NULL;
 	}
 	if (game->img && game->mlx)
 	{
 		mlx_destroy_image(game->mlx, game->img);
 		game->img = NULL;
 	}
-	if (game->mlx_win)
+	if (game->mlx_win && game->mlx)
 	{
 		mlx_destroy_window(game->mlx, game->mlx_win);
 		game->mlx_win = NULL;

@@ -19,7 +19,7 @@ void	draw_ceiling_and_floor(t_game *game)
 	int	ceiling_color;
 	int	floor_color;
 
-	if (game->map_data)
+	if (game && game->map_data)
 	{
 		ceiling_color = rgb_to_color(game->map_data->r_plafond, 
 			game->map_data->g_plafond, game->map_data->b_plafond);
@@ -79,15 +79,15 @@ void	draw_solid_wall(t_game *game, int x, t_wall_info wall, int color)
 	}
 }
 
-void	draw_wall_slice(t_game *game, int x, double distance, int wall_direction)
+void	draw_wall_slice(t_game *game, int x, t_ray *ray)
 {
 	t_wall_info	wall;
 
-	wall = calc_wall_dimensions(distance);
+	wall = calc_wall_dimensions(ray->distance);
 	if (game->map_data)
-		draw_directional_textured_wall(game, x, wall, wall_direction);
+		draw_directional_textured_wall(game, x, wall, ray);
 	else
-		draw_solid_wall(game, x, wall, get_wall_color(distance));
+		draw_solid_wall(game, x, wall, get_wall_color(ray->distance));
 }
 
 void	render_scene(t_game *game)
@@ -98,7 +98,7 @@ void	render_scene(t_game *game)
 	x = 0;
 	while (x < RAYS_COUNT)
 	{
-		draw_wall_slice(game, x, game->rays[x].distance, game->rays[x].wall_direction);
+		draw_wall_slice(game, x, &game->rays[x]);
 		x++;
 	}
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img, 0, 0);

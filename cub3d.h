@@ -86,6 +86,8 @@ typedef struct	s_ray
 	double	distance;
 	int		hit_vertical;
 	int		wall_direction;
+	double	hit_x;
+	double	hit_y;
 }	t_ray;
 
 typedef struct	s_game
@@ -181,7 +183,7 @@ void	print_map_debug(t_map *map);
 
 void	draw_textured_wall(t_game *game, int x, t_wall_info wall);
 int		get_wall_color(double distance);
-void	draw_directional_textured_wall(t_game *game, int x, t_wall_info wall, int wall_direction);
+void	draw_directional_textured_wall(t_game *game, int x, t_wall_info wall, t_ray *ray);
 int		get_texture_for_direction(t_game *game, int wall_direction, int **tex_data, int *tex_width, int *tex_height);
 void	draw_solid_wall(t_game *game, int x, t_wall_info wall, int color);
 

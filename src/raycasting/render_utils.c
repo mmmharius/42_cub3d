@@ -68,7 +68,7 @@ int	rgb_to_color(int r, int g, int b)
 	return ((r << 16) | (g << 8) | b);
 }
 
-void	draw_directional_textured_wall(t_game *game, int x, t_wall_info wall, int wall_direction)
+void	draw_directional_textured_wall(t_game *game, int x, t_wall_info wall, t_ray *ray)
 {
 	int	y;
 	int	tex_x;
@@ -77,12 +77,22 @@ void	draw_directional_textured_wall(t_game *game, int x, t_wall_info wall, int w
 	int	*tex_data;
 	int	tex_width;
 	int	tex_height;
-	if (!get_texture_for_direction(game, wall_direction, &tex_data, &tex_width, &tex_height))
+	double	wall_pos;
+
+	if (!get_texture_for_direction(game, ray->wall_direction, &tex_data, &tex_width, &tex_height))
 	{
 		draw_solid_wall(game, x, wall, get_wall_color(0));
 		return ;
 	}
-	tex_x = x % tex_width;
+	if (ray->wall_direction == WALL_NORTH || ray->wall_direction == WALL_SOUTH)
+		wall_pos = ray->hit_x / TILE_SIZE - floor(ray->hit_x / TILE_SIZE);
+	else
+		wall_pos = ray->hit_y / TILE_SIZE - floor(ray->hit_y / TILE_SIZE);
+	tex_x = (int)(wall_pos * tex_width);
+	if (tex_x < 0)
+		tex_x = 0;
+	if (tex_x >= tex_width)
+		tex_x = tex_width - 1;
 	y = wall.start;
 	while (y <= wall.end && y < SCREEN_HEIGHT)
 	{

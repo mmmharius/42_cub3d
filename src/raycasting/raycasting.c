@@ -34,11 +34,13 @@ double	cast_single_ray(t_game *game, double ray_angle, int *wall_dir)
 	double	delta_y;
 	double	x;
 	double	y;
+	double	prev_x;
+	double	prev_y;
 	double	distance;
-	int		wall_x;
-	int		wall_y;
-	double	rel_x;
-	double	rel_y;
+	int		map_x;
+	int		map_y;
+	int		prev_map_x;
+	int		prev_map_y;
 
 	delta_x = cos(ray_angle);
 	delta_y = sin(ray_angle);
@@ -47,26 +49,81 @@ double	cast_single_ray(t_game *game, double ray_angle, int *wall_dir)
 	distance = 0;
 	while (!is_wall(game, (int)(x / TILE_SIZE), (int)(y / TILE_SIZE)))
 	{
+		prev_x = x;
+		prev_y = y;
 		x += delta_x;
 		y += delta_y;
 		distance += 1;
 		if (distance > 1000)
 			break ;
 	}
-	wall_x = (int)(x / TILE_SIZE);
-	wall_y = (int)(y / TILE_SIZE);
-	rel_x = x - (wall_x * TILE_SIZE + TILE_SIZE / 2);
-	rel_y = y - (wall_y * TILE_SIZE + TILE_SIZE / 2);
-	if (fabs(rel_x) > fabs(rel_y))
+	map_x = (int)(x / TILE_SIZE);
+	map_y = (int)(y / TILE_SIZE);
+	prev_map_x = (int)(prev_x / TILE_SIZE);
+	prev_map_y = (int)(prev_y / TILE_SIZE);
+	if (map_x != prev_map_x)
 	{
-		if (rel_x > 0)
+		if (delta_x > 0)
 			*wall_dir = WALL_WEST;
 		else
 			*wall_dir = WALL_EAST;
 	}
 	else
 	{
-		if (rel_y > 0)
+		if (delta_y > 0)
+			*wall_dir = WALL_NORTH;
+		else
+			*wall_dir = WALL_SOUTH;
+	}
+	return (sqrt((x - game->player.x) * (x - game->player.x)
+			+ (y - game->player.y) * (y - game->player.y)));
+}
+
+double	cast_single_ray_with_pos(t_game *game, double ray_angle, int *wall_dir, double *hit_x, double *hit_y)
+{
+	double	delta_x;
+	double	delta_y;
+	double	x;
+	double	y;
+	double	prev_x;
+	double	prev_y;
+	double	distance;
+	int		map_x;
+	int		map_y;
+	int		prev_map_x;
+	int		prev_map_y;
+
+	delta_x = cos(ray_angle);
+	delta_y = sin(ray_angle);
+	x = game->player.x;
+	y = game->player.y;
+	distance = 0;
+	while (!is_wall(game, (int)(x / TILE_SIZE), (int)(y / TILE_SIZE)))
+	{
+		prev_x = x;
+		prev_y = y;
+		x += delta_x;
+		y += delta_y;
+		distance += 1;
+		if (distance > 1000)
+			break ;
+	}
+	*hit_x = x;
+	*hit_y = y;
+	map_x = (int)(x / TILE_SIZE);
+	map_y = (int)(y / TILE_SIZE);
+	prev_map_x = (int)(prev_x / TILE_SIZE);
+	prev_map_y = (int)(prev_y / TILE_SIZE);
+	if (map_x != prev_map_x)
+	{
+		if (delta_x > 0)
+			*wall_dir = WALL_WEST;
+		else
+			*wall_dir = WALL_EAST;
+	}
+	else
+	{
+		if (delta_y > 0)
 			*wall_dir = WALL_NORTH;
 		else
 			*wall_dir = WALL_SOUTH;
@@ -81,6 +138,8 @@ void	cast_rays(t_game *game)
 	double	ray_angle;
 	double	angle_step;
 	int		wall_dir;
+	double	hit_x;
+	double	hit_y;
 
 	angle_step = (FOV * M_PI / 180.0) / RAYS_COUNT;
 	i = 0;
@@ -90,8 +149,10 @@ void	cast_rays(t_game *game)
 			+ i * angle_step;
 		ray_angle = normalize_angle(ray_angle);
 		game->rays[i].angle = ray_angle;
-		game->rays[i].distance = cast_single_ray(game, ray_angle, &wall_dir);
+		game->rays[i].distance = cast_single_ray_with_pos(game, ray_angle, &wall_dir, &hit_x, &hit_y);
 		game->rays[i].wall_direction = wall_dir;
+		game->rays[i].hit_x = hit_x;
+		game->rays[i].hit_y = hit_y;
 		game->rays[i].distance *= cos(ray_angle - game->player.angle);
 		i++;
 	}
