@@ -40,7 +40,7 @@ int	can_move(t_game *game, double new_x, double new_y)
 
 	map_x = (int)(new_x / TILE_SIZE);
 	map_y = (int)(new_y / TILE_SIZE);
-	if (map_x < 0 || map_x >= MAP_WIDTH || map_y < 0 || map_y >= MAP_HEIGHT)
+	if (map_x < 0 || map_x >= game->map_width || map_y < 0 || map_y >= game->map_height)
 		return (0);
 	return (game->map[map_y][map_x] == '0');
 }

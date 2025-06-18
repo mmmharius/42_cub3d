@@ -101,7 +101,9 @@ typedef struct	s_game
 	int			endian;
 	int			win_width;
 	int			win_height;
-	char		map[MAP_HEIGHT][MAP_WIDTH];
+	char		**map;
+	int			map_width;
+	int			map_height;
 	t_player	player;
 	t_ray		rays[RAYS_COUNT];
 	int			*wall_data;

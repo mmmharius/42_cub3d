@@ -23,7 +23,7 @@ double	normalize_angle(double angle)
 
 int	is_wall(t_game *game, int x, int y)
 {
-	if (x < 0 || x >= MAP_WIDTH || y < 0 || y >= MAP_HEIGHT)
+	if (x < 0 || x >= game->map_width || y < 0 || y >= game->map_height)
 		return (1);
 	return (game->map[y][x] == '1');
 }
