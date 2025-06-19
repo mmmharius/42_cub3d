@@ -35,12 +35,14 @@ void	find_player_position(t_game *game)
 {
 	int	i;
 	int	j;
+	int	line_len;
 
 	i = 0;
 	while (i < game->map_height)
 	{
 		j = 0;
-		while (j < game->map_width)
+		line_len = ft_strlen(game->map[i]);
+		while (j < game->map_width && j < line_len)
 		{
 			if (game->map[i][j] == 'N' || game->map[i][j] == 'S' ||
 				game->map[i][j] == 'E' || game->map[i][j] == 'W')

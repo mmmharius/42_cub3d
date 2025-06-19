@@ -148,6 +148,7 @@ void	draw_minimap(t_game *game);
 
 int		close_hook(t_game *game);
 void	cleanup_game(t_game *game);
+void	cleanup_game2(t_game *game);
 void	init_map(t_game *game);
 void	init_player(t_game *game);
 void	init_game(t_game *game, t_map *map);
