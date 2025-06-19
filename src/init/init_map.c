@@ -32,7 +32,13 @@ void	copy_map_data(t_game *game)
 	{
 		game->map[i] = ft_strdup(game->map_data->map[i]);
 		if (!game->map[i])
+		{
+			while (--i >= 0)
+				free(game->map[i]);
+			free(game->map);
+			game->map = NULL;
 			return ;
+		}
 		i++;
 	}
 }

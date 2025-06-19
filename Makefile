@@ -6,7 +6,7 @@
 #    By: mpapin <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 14:30:00 by aberenge          #+#    #+#              #
-#    Updated: 2025/06/19 18:19:42 by mpapin           ###   ########.fr        #
+#    Updated: 2025/06/19 18:47:26 by mpapin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,15 +43,13 @@ OBJS		= $(SRCS:%.c=$(OBJDIR)/%.o)
 all: $(LIBFT) $(MLX) $(NAME)
 
 $(LIBFT):
-			@echo "Compiling libft : fichier en cours"
+			@echo "Compiling libft..."
 			@$(MAKE) -C $(LIBFT_DIR) -s
-			@echo "Compiling libft... : finish"
 
 $(MLX):
-			@echo "Compiling MLX : fichier en cours"
+			@echo "Compiling MLX..."
 			@cd $(MLX_DIR) && ./configure >/dev/null 2>&1 || true
 			@$(MAKE) -C $(MLX_DIR) >/dev/null 2>&1
-			@echo "Compiling MLX... : finish"
 
 $(OBJDIR):
 			@echo "Compiling all .c"
@@ -65,12 +63,10 @@ $(OBJDIR):
 
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
 			@mkdir -p $(dir $@)
-			@echo "Compiling all .c : $< en cours"
 			@$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
 			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX) $(MLX_FLAGS) -o $(NAME)
-			@echo "Compiling all .c : finish"
 			@echo "$(NAME) compiled successfully!"
 
 clean:

@@ -24,10 +24,7 @@ void	load_wall_texture(t_game *game)
 	{
 		game->wall_data = (int *)mlx_get_data_addr(game->wall_texture,
 				&bpp, &line_len, &endian);
-		printf("Texture loaded: %dx%d\n", game->tex_width, game->tex_height);
 	}
-	else
-		printf("Failed to load wall.xpm\n");
 }
 
 void	load_north_texture(t_game *game, t_map *map)
@@ -45,7 +42,7 @@ void	load_north_texture(t_game *game, t_map *map)
 					&bpp, &line_len, &endian);
 		else
 		{
-			printf("Error: Cannot load north texture: %s\n", map->no_texture);
+			write(2, "Error: Cannot load north texture\n", 33);
 			cleanup_game(game);
 			exit(1);
 		}
@@ -67,7 +64,7 @@ void	load_south_texture(t_game *game, t_map *map)
 					&bpp, &line_len, &endian);
 		else
 		{
-			printf("Error: Cannot load south texture: %s\n", map->so_texture);
+			write(2, "Error: Cannot load south texture\n", 33);
 			cleanup_game(game);
 			exit(1);
 		}
@@ -89,7 +86,7 @@ void	load_west_texture(t_game *game, t_map *map)
 					&bpp, &line_len, &endian);
 		else
 		{
-			printf("Error: Cannot load west texture: %s\n", map->we_texture);
+			write(2, "Error: Cannot load west texture\n", 32);
 			cleanup_game(game);
 			exit(1);
 		}

@@ -30,7 +30,7 @@ void	process_map_end(t_map *map, char **temp_map, int line_count)
 			i++;
 		}
 		allocate_and_copy_map(map, temp_map);
-		free(temp_map);
+		ft_free_tab(temp_map);
 		map->assigned_map = 1;
 	}
 }
@@ -45,7 +45,15 @@ void	allocate_and_copy_map(t_map *map, char **temp_map)
 	i = 0;
 	while (i < map->height)
 	{
-		map->map[i] = temp_map[i];
+		map->map[i] = ft_strdup(temp_map[i]);
+		if (!map->map[i])
+		{
+			while (--i >= 0)
+				free(map->map[i]);
+			free(map->map);
+			map->map = NULL;
+			return ;
+		}
 		i++;
 	}
 }

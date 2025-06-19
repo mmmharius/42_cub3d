@@ -27,7 +27,7 @@ void	load_east_texture(t_game *game, t_map *map)
 					&bpp, &line_len, &endian);
 		else
 		{
-			printf("Error: Cannot load east texture: %s\n", map->ea_texture);
+			write(2, "Error: Cannot load east texture\n", 32);
 			cleanup_game(game);
 			exit(1);
 		}

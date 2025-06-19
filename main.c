@@ -53,7 +53,7 @@ int	main(int argc, char **argv)
 	
 	if (argc != 2)
 	{
-		printf("Error : Cub3d needs a map\n");
+		write(2, "Error : Cub3d needs a map\n", 26);
 		return (1);
 	}
 	if (parsing(argv[1], &map))

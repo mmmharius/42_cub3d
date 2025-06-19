@@ -16,7 +16,7 @@ int	parsing(char *map_path, t_map *map)
 {
 	init_map_struct(map);
 	if (check_cub(map_path) || catch_all(map_path, map)
-		|| store_map_data(map_path, map) || verify_parsing(map))
+		|| verify_parsing(map))
 		return (1);
 	else
 		return (0);
@@ -75,7 +75,6 @@ int	catch_all(char *map_path, t_map *map)
 	int		fd;
 	char	*ligne;
 
-	printf("Parsing: %s\n", map_path);
 	fd = open(map_path, O_RDONLY);
 	if (fd == -1)
 		return (0);

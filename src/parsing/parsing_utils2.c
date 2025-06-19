@@ -34,19 +34,19 @@ static int	check_basic_requirements(t_map *map)
 {
 	if (!map->assigned_texture)
 	{
-		printf("Error\nMissing texture assignments\n");
+		write(2, "Error\nMissing texture assignments\n", 33);
 		return (1);
 	}
 	if (!map->assigned_color)
 	{
-		printf("Error\nMissing color assignments\n");
+		write(2, "Error\nMissing color assignments\n", 31);
 		return (1);
 	}
 	if (check_colors_range(map))
 		return (1);
 	if (!map->map || map->height == 0)
 	{
-		printf("Error\nNo valid map found\n");
+		write(2, "Error\nNo valid map found\n", 25);
 		return (1);
 	}
 	return (0);
@@ -58,10 +58,6 @@ int	verify_parsing(t_map *map)
 
 	if (check_basic_requirements(map))
 		return (1);
-	printf("Map: %dx%d\n", map->width, map->height);
-	printf("Floor RGB: %d,%d,%d\n", map->r_sol, map->g_sol, map->b_sol);
-	printf("Ceiling RGB: %d,%d,%d\n",
-		map->r_plafond, map->g_plafond, map->b_plafond);
 	map_array = (char **)map->map;
 	if (check_map_characters(map_array, map->height))
 		return (1);
@@ -78,14 +74,14 @@ int	check_cub(char *map_path)
 	len = ft_strlen(map_path);
 	if (len < 4)
 	{
-		printf("Error\nMap need to be in .cub !\n");
+		write(2, "Error\nMap need to be in .cub !\n", 29);
 		return (1);
 	}
 	if (ft_strcmp(map_path + len - 4, ".cub") == 0)
 	{
 		return (0);
 	}
-	printf("Error\nMap need to be in .cub !\n");
+	write(2, "Error\nMap need to be in .cub !\n", 29);
 	return (1);
 }
 
