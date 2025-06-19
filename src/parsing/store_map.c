@@ -17,21 +17,16 @@ int	store_map_data(char *map_path, t_map *map)
 	int		fd;
 	char	*ligne;
 
-	(void)map;
 	fd = open(map_path, O_RDONLY);
 	if (fd == -1)
 		return (1);
-	while ((ligne = get_next_line(fd)))
+	ligne = get_next_line(fd);
+	while (ligne)
 	{
-		process_line(ligne);
+		process_line(ligne, map);
 		free(ligne);
+		ligne = get_next_line(fd);
 	}
 	close(fd);
 	return (0);
-}
-
-void	process_line(char *ligne)
-{
-	if (!ligne || ligne[0] == '\n')
-		return ;
 }

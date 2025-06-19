@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 13:13:49 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/19 05:35:43 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/19 18:16:16 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,6 @@ int	parsing(char *map_path, t_map *map)
 		return (1);
 	else
 		return (0);
-}
-
-int	check_cub(char *map_path)
-{
-	int	len;
-
-	len = ft_strlen(map_path);
-	if (len < 4)
-	{
-		printf("Error\nMap need to be in .cub !\n");
-		return (1);
-	}
-	if (ft_strcmp(map_path + len - 4, ".cub") == 0)
-	{
-		return (0);
-	}
-	printf("Error\nMap need to be in .cub !\n");
-	return (1);
 }
 
 void	assign_texture(char *ligne, t_map *map)
@@ -73,6 +55,21 @@ void	assign_map(char *ligne, t_map *map)
 	store_map_line(ligne, temp_map, &line_count);
 }
 
+void	process_line(char *ligne, t_map *map)
+{
+	if (ligne[0] == '\n')
+		return ;
+	if (ft_strncmp(ligne, "NO ", 3) == 0
+		|| ft_strncmp(ligne, "SO ", 3) == 0
+		|| ft_strncmp(ligne, "WE ", 3) == 0
+		|| ft_strncmp(ligne, "EA ", 3) == 0)
+		assign_texture(ligne, map);
+	else if (ligne[0] == 'F' || ligne[0] == 'C')
+		assign_color(ligne, map);
+	else if (is_map_line(ligne))
+		assign_map(ligne, map);
+}
+
 int	catch_all(char *map_path, t_map *map)
 {
 	int		fd;
@@ -85,17 +82,7 @@ int	catch_all(char *map_path, t_map *map)
 	ligne = get_next_line(fd);
 	while (ligne != NULL)
 	{
-		if (ligne[0] != '\n')
-		{
-			if (ft_strncmp(ligne, "NO ", 3) == 0 || ft_strncmp(ligne, "SO ", 3) == 0
-				|| ft_strncmp(ligne, "WE ", 3) == 0
-				|| ft_strncmp(ligne, "EA ", 3) == 0)
-				assign_texture(ligne, map);
-			else if (ligne[0] == 'F' || ligne[0] == 'C')
-				assign_color(ligne, map);
-			else if (is_map_line(ligne))
-				assign_map(ligne, map);
-		}
+		process_line(ligne, map);
 		free(ligne);
 		ligne = get_next_line(fd);
 	}
@@ -104,4 +91,3 @@ int	catch_all(char *map_path, t_map *map)
 	close(fd);
 	return (0);
 }
-

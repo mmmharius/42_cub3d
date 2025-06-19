@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 00:00:00 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/19 00:00:00 by mpapin           ###   ########.fr       */
+/*   Created: 2025/06/10 13:13:49 by mpapin            #+#    #+#             */
+/*   Updated: 2025/06/19 18:09:27 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@ int	is_map_line(char *ligne)
 	return (1);
 }
 
-int	verify_parsing(t_map *map)
+static int	check_basic_requirements(t_map *map)
 {
-	char	**map_array;
-
 	if (!map->assigned_texture)
 	{
 		printf("Error\nMissing texture assignments\n");
@@ -51,6 +49,15 @@ int	verify_parsing(t_map *map)
 		printf("Error\nNo valid map found\n");
 		return (1);
 	}
+	return (0);
+}
+
+int	verify_parsing(t_map *map)
+{
+	char	**map_array;
+
+	if (check_basic_requirements(map))
+		return (1);
 	printf("Map: %dx%d\n", map->width, map->height);
 	printf("Floor RGB: %d,%d,%d\n", map->r_sol, map->g_sol, map->b_sol);
 	printf("Ceiling RGB: %d,%d,%d\n",
@@ -62,4 +69,38 @@ int	verify_parsing(t_map *map)
 		|| check_map_borders(map_array, map->height, map->width))
 		return (1);
 	return (0);
+}
+
+int	check_cub(char *map_path)
+{
+	int	len;
+
+	len = ft_strlen(map_path);
+	if (len < 4)
+	{
+		printf("Error\nMap need to be in .cub !\n");
+		return (1);
+	}
+	if (ft_strcmp(map_path + len - 4, ".cub") == 0)
+	{
+		return (0);
+	}
+	printf("Error\nMap need to be in .cub !\n");
+	return (1);
+}
+
+char	**allocate_map_array(char *map_path, t_map *map)
+{
+	int		lines;
+	char	**map_array;
+
+	lines = count_map_lines(map_path);
+	if (lines == 0)
+		return (NULL);
+	map->height = lines;
+	map_array = malloc(sizeof(char *) * (lines + 1));
+	if (!map_array)
+		return (NULL);
+	map_array[lines] = NULL;
+	return (map_array);
 }

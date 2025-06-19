@@ -6,7 +6,7 @@
 #    By: mpapin <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 14:30:00 by aberenge          #+#    #+#              #
-#    Updated: 2025/06/19 05:00:27 by mpapin           ###   ########.fr        #
+#    Updated: 2025/06/19 18:19:42 by mpapin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,33 +37,21 @@ SRCS		= main.c src/exit/exit.c src/init.c \
 			  src/parsing/parsing_texture.c src/parsing/parsing_color.c src/parsing/parsing_map.c src/parsing/store_map.c \
 			  src/parsing/verif_texture.c src/parsing/verif_map.c libs/gnl/get_next_line.c
 
-BONUS_SRCS	= main.c src/exit/exit.c src/init.c \
-				src/init/init_game.c src/init/init_window.c src/init/init_map.c src/init/init_player.c \
-				src/init/load_textures.c src/init/load_textures2.c \
-				src/raycasting/raycasting.c src/raycasting/render.c src/raycasting/render_utils.c \
-				src/raycasting/render_utils2.c src/raycasting/render_utils3.c src/raycasting/render_pixel.c \
-				src/raycasting/render_color.c src/raycasting/render_texture.c \
-				src/raycasting/ray_utils.c src/raycasting/ray_utils2.c src/raycasting/ray_cast.c src/raycasting/draw_background.c src/raycasting/draw_walls.c \
-				src/player/controls.c src/player/controls_utils.c src/player/movement.c src/player/rotation.c \
-			  src/parsing/parsing.c src/parsing/parsing_utils.c src/parsing/parsing_utils2.c src/parsing/verif.c \
-			  src/parsing/verif_utils.c src/parsing/verif_walls.c \
-			  src/parsing/parsing_texture.c src/parsing/parsing_color.c src/parsing/parsing_map.c src/parsing/store_map.c \
-			  src/parsing/verif_texture.c src/parsing/verif_map.c \
-			  src/bonus/minimap_bonus.c libs/gnl/get_next_line.c
 
 OBJS		= $(SRCS:%.c=$(OBJDIR)/%.o)
-BONUS_OBJS	= $(BONUS_SRCS:%.c=$(OBJDIR)/%.o)
 
 all: $(LIBFT) $(MLX) $(NAME)
 
 $(LIBFT):
-			@echo "Compiling libft..."
+			@echo "Compiling libft : fichier en cours"
 			@$(MAKE) -C $(LIBFT_DIR) -s
+			@echo "Compiling libft... : finish"
 
 $(MLX):
-			@echo "Compiling MLX..."
+			@echo "Compiling MLX : fichier en cours"
 			@cd $(MLX_DIR) && ./configure >/dev/null 2>&1 || true
 			@$(MAKE) -C $(MLX_DIR) >/dev/null 2>&1
+			@echo "Compiling MLX... : finish"
 
 $(OBJDIR):
 			@echo "Compiling all .c"
@@ -73,19 +61,16 @@ $(OBJDIR):
 			@mkdir -p $(OBJDIR)/src/raycasting
 			@mkdir -p $(OBJDIR)/src/player
 			@mkdir -p $(OBJDIR)/src/exit
-			@mkdir -p $(OBJDIR)/src/bonus
 			@mkdir -p $(OBJDIR)/libs/gnl
 
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
 			@mkdir -p $(dir $@)
+			@echo "Compiling all .c : $< en cours"
 			@$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@
-
-$(OBJDIR)/src/bonus/%.o: src/bonus/%.c | $(OBJDIR)
-			@mkdir -p $(dir $@)
-			@$(CC) $(CFLAGS) -DBONUS $(INCDIR) -c $< -o $@
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
 			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX) $(MLX_FLAGS) -o $(NAME)
+			@echo "Compiling all .c : finish"
 			@echo "$(NAME) compiled successfully!"
 
 clean:
@@ -102,11 +87,7 @@ fclean: clean
 
 re: fclean all
 
-bonus: $(LIBFT) $(MLX) $(BONUS_OBJS)
-			@$(CC) $(CFLAGS) -DBONUS $(BONUS_OBJS) $(LIBFT) $(MLX) $(MLX_FLAGS) -o $(NAME)
-			@echo "$(NAME) compiled with bonus features!"
-
 mac:
 			@$(MAKE) MLX_DIR=libs/minilibx_macos MLX_FLAGS="-framework OpenGL -framework AppKit" all
 
-.PHONY: all clean fclean re mac bonus
+.PHONY: all clean fclean re mac

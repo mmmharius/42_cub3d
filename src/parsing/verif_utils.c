@@ -5,17 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 00:00:00 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/19 00:00:00 by mpapin           ###   ########.fr       */
+/*   Created: 2025/06/10 13:13:49 by mpapin            #+#    #+#             */
+/*   Updated: 2025/06/19 18:10:22 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	verify_map_complete(t_map *map)
+static int	verify_basic_assignments(t_map *map)
 {
-	char	**map_array;
-
 	if (!map->assigned_texture)
 	{
 		printf("Error\nMissing texture assignments\n");
@@ -26,6 +24,15 @@ int	verify_map_complete(t_map *map)
 		printf("Error\nMissing color assignments\n");
 		return (1);
 	}
+	return (0);
+}
+
+int	verify_map_complete(t_map *map)
+{
+	char	**map_array;
+
+	if (verify_basic_assignments(map))
+		return (1);
 	if (check_texture_files(map))
 		return (1);
 	if (check_colors_range(map))

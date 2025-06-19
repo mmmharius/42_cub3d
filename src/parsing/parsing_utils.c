@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 00:00:00 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/19 00:00:00 by mpapin           ###   ########.fr       */
+/*   Created: 2025/06/10 13:13:49 by mpapin            #+#    #+#             */
+/*   Updated: 2025/06/19 18:09:30 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,30 +28,23 @@ void	free_map_array(char **map_array, int height)
 	free(map_array);
 }
 
+static void	free_texture(char **texture)
+{
+	if (*texture)
+	{
+		free(*texture);
+		*texture = NULL;
+	}
+}
+
 void	free_parsing_data(t_map *map)
 {
 	if (!map)
 		return ;
-	if (map->no_texture)
-	{
-		free(map->no_texture);
-		map->no_texture = NULL;
-	}
-	if (map->so_texture)
-	{
-		free(map->so_texture);
-		map->so_texture = NULL;
-	}
-	if (map->we_texture)
-	{
-		free(map->we_texture);
-		map->we_texture = NULL;
-	}
-	if (map->ea_texture)
-	{
-		free(map->ea_texture);
-		map->ea_texture = NULL;
-	}
+	free_texture(&map->no_texture);
+	free_texture(&map->so_texture);
+	free_texture(&map->we_texture);
+	free_texture(&map->ea_texture);
 	if (map->map)
 	{
 		free_map_array(map->map, map->height);
@@ -88,29 +80,14 @@ int	count_map_lines(char *map_path)
 	if (fd == -1)
 		return (0);
 	count = 0;
-	while ((ligne = get_next_line(fd)))
+	ligne = get_next_line(fd);
+	while (ligne)
 	{
 		if (is_map_line(ligne))
 			count++;
 		free(ligne);
+		ligne = get_next_line(fd);
 	}
 	close(fd);
 	return (count);
 }
-
-char	**allocate_map_array(char *map_path, t_map *map)
-{
-	int		lines;
-	char	**map_array;
-
-	lines = count_map_lines(map_path);
-	if (lines == 0)
-		return (NULL);
-	map->height = lines;
-	map_array = malloc(sizeof(char *) * (lines + 1));
-	if (!map_array)
-		return (NULL);
-	map_array[lines] = NULL;
-	return (map_array);
-}
-

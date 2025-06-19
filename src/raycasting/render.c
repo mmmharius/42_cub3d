@@ -34,6 +34,5 @@ void	render_scene(t_game *game)
 		draw_wall_slice(game, x, &game->rays[x]);
 		x++;
 	}
-	//draw_minimap_if_bonus(game);
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img, 0, 0);
 }

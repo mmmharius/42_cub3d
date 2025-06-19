@@ -72,3 +72,28 @@ int	validate_map_characters(char **map_array, int height)
 	}
 	return (0);
 }
+
+int	check_map_borders(char **map_array, int height, int width)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < height)
+	{
+		j = 0;
+		while (j < width && map_array[i][j])
+		{
+			if ((i == 0 || i == height - 1 || j == 0 || j == width - 1)
+				&& map_array[i][j] != '1' && map_array[i][j] != ' ')
+			{
+				printf("Error\nMap border not properly closed at [%d][%d]\n",
+					i, j);
+				return (1);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}

@@ -38,11 +38,6 @@ int	can_move(t_game *game, double new_x, double new_y)
 	int	map_x;
 	int	map_y;
 
-#ifdef BONUS
-
-	return (can_move_with_collision(game, new_x, new_y));
-
-#endif
 	map_x = (int)(new_x / TILE_SIZE);
 	map_y = (int)(new_y / TILE_SIZE);
 	if (map_x < 0 || map_x >= game->map_width

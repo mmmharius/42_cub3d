@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:04:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/19 05:00:21 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/19 18:16:50 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,9 +269,7 @@ void	process_map_end(t_map *map, char **temp_map, int line_count);
 void	allocate_and_copy_map(t_map *map, char **temp_map);
 void	store_map_line(char *ligne, char **temp_map, int *line_count);
 void	init_temp_map(char ***temp_map, int *first_map_line);
-void	process_line(char *ligne);
-
-// parsing_test
+void	process_line(char *ligne, t_map *map);
 void	free_parsing_data(t_map *map);
 void	free_map_array(char **map_array, int height);
 void	init_map_struct(t_map *map);
@@ -288,7 +286,7 @@ int		check_colors_range(t_map *map);
 int		check_map_characters(char **map_array, int height);
 int		check_map_borders(char **map_array, int height, int width);
 int		check_map_enclosed(char **map_array, int height, int width);
-int		is_surrounded_by_walls(char **map_array, int height, int width, int x, int y);
+int		check_walls_flood_fill(char **map, int player_x, int player_y, int height);
 void	print_map_debug(t_map *map);
 int		verify_map_complete(t_map *map);
 int		check_texture_file(char *texture_path, char *direction);

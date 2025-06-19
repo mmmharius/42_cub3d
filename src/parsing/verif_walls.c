@@ -5,44 +5,94 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 00:00:00 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/19 00:00:00 by mpapin           ###   ########.fr       */
+/*   Created: 2025/06/10 13:13:49 by mpapin            #+#    #+#             */
+/*   Updated: 2025/06/19 18:13:52 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int	is_valid_char(char c)
+static int	is_walkable(char c)
 {
-	return (c == '1' || c == '0' || c == 'N'
-		|| c == 'S' || c == 'E' || c == 'W');
+	return (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
 
-static int	check_up_down(char **map_array, int height, int x, int y)
+static int	is_valid_pos(char **map, int x, int y, int height)
 {
-	if (x > 0 && !is_valid_char(map_array[x - 1][y]))
+	int	width;
+
+	if (x < 0 || x >= height)
 		return (0);
-	if (x < height - 1 && !is_valid_char(map_array[x + 1][y]))
+	if (y < 0)
+		return (0);
+	width = ft_strlen(map[x]);
+	if (y >= width)
 		return (0);
 	return (1);
 }
 
-static int	check_left_right(char **map_array, int width, int x, int y)
+static int	flood_fill_recursive(char **map, int x, int y, int height)
 {
-	if (y > 0 && !is_valid_char(map_array[x][y - 1]))
+	if (!is_valid_pos(map, x, y, height))
 		return (0);
-	if (y < width - 1 && !is_valid_char(map_array[x][y + 1]))
+	if (map[x][y] == '1' || map[x][y] == 'V')
+		return (1);
+	if (map[x][y] == ' ' || map[x][y] == '\t')
+		return (0);
+	if (!is_walkable(map[x][y]))
+		return (1);
+	map[x][y] = 'V';
+	if (!flood_fill_recursive(map, x - 1, y, height))
+		return (0);
+	if (!flood_fill_recursive(map, x + 1, y, height))
+		return (0);
+	if (!flood_fill_recursive(map, x, y - 1, height))
+		return (0);
+	if (!flood_fill_recursive(map, x, y + 1, height))
 		return (0);
 	return (1);
 }
 
-int	is_surrounded_by_walls(char **map_array, int height, int width, int x, int y)
+static char	**copy_map(char **map, int height)
 {
-	if (x == 0 || y == 0 || x == height - 1 || y == width - 1)
+	char	**map_copy;
+	int		i;
+
+	map_copy = malloc(sizeof(char *) * height);
+	if (!map_copy)
+		return (NULL);
+	i = 0;
+	while (i < height)
+	{
+		map_copy[i] = ft_strdup(map[i]);
+		if (!map_copy[i])
+		{
+			while (--i >= 0)
+				free(map_copy[i]);
+			free(map_copy);
+			return (NULL);
+		}
+		i++;
+	}
+	return (map_copy);
+}
+
+int	check_walls_flood_fill(char **map, int player_x, int player_y, int height)
+{
+	char	**map_copy;
+	int		result;
+	int		i;
+
+	map_copy = copy_map(map, height);
+	if (!map_copy)
 		return (0);
-	if (!check_up_down(map_array, height, x, y))
-		return (0);
-	if (!check_left_right(map_array, width, x, y))
-		return (0);
-	return (1);
+	result = flood_fill_recursive(map_copy, player_x, player_y, height);
+	i = 0;
+	while (i < height)
+	{
+		free(map_copy[i]);
+		i++;
+	}
+	free(map_copy);
+	return (result);
 }
