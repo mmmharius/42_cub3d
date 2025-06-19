@@ -23,6 +23,13 @@ void	cleanup_game(t_game *game)
 {
 	if (!game)
 		return ;
+	cleanup_map_data(game);
+	cleanup_textures_1(game);
+	cleanup_game2(game);
+}
+
+void	cleanup_map_data(t_game *game)
+{
 	if (game->map)
 	{
 		free_map_array(game->map, game->map_height);
@@ -33,6 +40,10 @@ void	cleanup_game(t_game *game)
 		free_parsing_data(game->map_data);
 		game->map_data = NULL;
 	}
+}
+
+void	cleanup_textures_1(t_game *game)
+{
 	if (game->wall_texture && game->mlx)
 	{
 		mlx_destroy_image(game->mlx, game->wall_texture);
@@ -53,7 +64,6 @@ void	cleanup_game(t_game *game)
 		mlx_destroy_image(game->mlx, game->we_texture);
 		game->we_texture = NULL;
 	}
-	cleanup_game2(game);
 }
 
 void	cleanup_game2(t_game *game)

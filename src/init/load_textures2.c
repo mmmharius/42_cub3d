@@ -25,6 +25,12 @@ void	load_east_texture(t_game *game, t_map *map)
 		if (game->ea_texture)
 			game->ea_tex_data = (int *)mlx_get_data_addr(game->ea_texture,
 					&bpp, &line_len, &endian);
+		else
+		{
+			printf("Error: Cannot load east texture: %s\n", map->ea_texture);
+			cleanup_game(game);
+			exit(1);
+		}
 	}
 }
 

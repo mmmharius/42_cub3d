@@ -43,6 +43,12 @@ void	load_north_texture(t_game *game, t_map *map)
 		if (game->no_texture)
 			game->no_tex_data = (int *)mlx_get_data_addr(game->no_texture,
 					&bpp, &line_len, &endian);
+		else
+		{
+			printf("Error: Cannot load north texture: %s\n", map->no_texture);
+			cleanup_game(game);
+			exit(1);
+		}
 	}
 }
 
@@ -59,6 +65,12 @@ void	load_south_texture(t_game *game, t_map *map)
 		if (game->so_texture)
 			game->so_tex_data = (int *)mlx_get_data_addr(game->so_texture,
 					&bpp, &line_len, &endian);
+		else
+		{
+			printf("Error: Cannot load south texture: %s\n", map->so_texture);
+			cleanup_game(game);
+			exit(1);
+		}
 	}
 }
 
@@ -75,5 +87,11 @@ void	load_west_texture(t_game *game, t_map *map)
 		if (game->we_texture)
 			game->we_tex_data = (int *)mlx_get_data_addr(game->we_texture,
 					&bpp, &line_len, &endian);
+		else
+		{
+			printf("Error: Cannot load west texture: %s\n", map->we_texture);
+			cleanup_game(game);
+			exit(1);
+		}
 	}
 }

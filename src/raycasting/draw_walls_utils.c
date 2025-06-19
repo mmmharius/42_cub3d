@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting.c                                       :+:      :+:    :+:   */
+/*   draw_walls_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/04 10:00:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/19 15:39:49 by aberenge         ###   ########.fr       */
+/*   Created: 2025/06/19 00:00:00 by mpapin            #+#    #+#             */
+/*   Updated: 2025/06/19 15:39:33 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	cast_rays(t_game *game)
+void	draw_solid_wall(t_game *game, int x, t_wall_info wall, int color)
 {
-	int		i;
-	double	ray_angle;
-	double	angle_step;
+	int	y;
 
-	angle_step = (FOV * M_PI / 180.0) / RAYS_COUNT;
-	i = 0;
-	while (i < RAYS_COUNT)
+	y = wall.start;
+	while (y <= wall.end && y < SCREEN_HEIGHT)
 	{
-		ray_angle = game->player.angle - (FOV * M_PI / 180.0) / 2
-			+ i * angle_step;
-		ray_angle = normalize_angle(ray_angle);
-		calculate_ray_data(game, i, ray_angle);
-		i++;
+		if (y >= 0)
+			put_pixel(game, x, y, color);
+		y++;
 	}
 }

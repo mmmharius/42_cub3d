@@ -143,12 +143,37 @@ typedef struct s_wall_info
 	int	end;
 }	t_wall_info;
 
+typedef struct s_texture_info
+{
+	int	*data;
+	int	width;
+	int	height;
+	int	x;
+}	t_texture_info;
+
+typedef struct s_ray_cast
+{
+	double	delta_x;
+	double	delta_y;
+	double	x;
+	double	y;
+	double	prev_x;
+}	t_ray_cast;
+
+typedef struct s_hit_pos
+{
+	double	x;
+	double	y;
+}	t_hit_pos;
+
 int		can_move_with_collision(t_game *game, double new_x, double new_y);
 void	draw_minimap(t_game *game);
 
 int		close_hook(t_game *game);
 void	cleanup_game(t_game *game);
 void	cleanup_game2(t_game *game);
+void	cleanup_map_data(t_game *game);
+void	cleanup_textures_1(t_game *game);
 void	init_map(t_game *game);
 void	init_player(t_game *game);
 void	init_game(t_game *game, t_map *map);
@@ -194,15 +219,12 @@ void	rotate_right(t_game *game);
 
 // raycasting
 int		is_wall(t_game *game, int x, int y);
-void	init_ray_values(t_game *game, double ray_angle, 
-			double *delta_x, double *delta_y, double *x, double *y);
+void	init_ray_values(t_game *game, double ray_angle, t_ray_cast *cast);
 double	calculate_distance(double x1, double y1, double x2, double y2);
-void	determine_wall_direction(double delta_x, double delta_y, 
-			int map_x, int prev_map_x, int *wall_dir);
-void	perform_ray_loop(t_game *game, double *x, double *y, 
-			double delta_x, double delta_y, double *distance);
+void	determine_wall_direction(t_ray_cast *cast, int map_x, int prev_map_x, int *wall_dir);
+void	perform_ray_loop(t_game *game, t_ray_cast *cast);
 double	cast_single_ray(t_game *game, double ray_angle, int *wall_dir);
-double	cast_single_ray_with_pos(t_game *game, double ray_angle, 
+double	cast_single_ray_with_pos(t_game *game, double ray_angle,
 			int *wall_dir, double *hit_x, double *hit_y);
 void	calculate_ray_data(t_game *game, int i, double ray_angle);
 
@@ -213,6 +235,13 @@ int		get_floor_color(t_game *game);
 void	draw_ceiling(t_game *game, int ceiling_color);
 void	draw_floor(t_game *game, int floor_color);
 void	draw_wall_slice(t_game *game, int x, t_ray *ray);
+void	draw_textured_wall(t_game *game, int x, t_wall_info wall);
+void	draw_directional_textured_wall(t_game *game, int x,
+			t_wall_info wall, t_ray *ray);
+int		get_texture_for_direction(t_game *game, int wall_direction,
+			t_texture_info *tex);
+int		get_wall_color(double distance);
+void	draw_solid_wall(t_game *game, int x, t_wall_info wall, int color);
 
 
 int		game_loop(t_game *game);
@@ -259,7 +288,9 @@ int		check_colors_range(t_map *map);
 int		check_map_characters(char **map_array, int height);
 int		check_map_borders(char **map_array, int height, int width);
 int		check_map_enclosed(char **map_array, int height, int width);
+int		is_surrounded_by_walls(char **map_array, int height, int width, int x, int y);
 void	print_map_debug(t_map *map);
+int		verify_map_complete(t_map *map);
 int		check_texture_file(char *texture_path, char *direction);
 int		check_north_texture(t_map *map);
 int		check_south_texture(t_map *map);
@@ -273,8 +304,14 @@ int		validate_map_characters(char **map_array, int height);
 void	draw_textured_wall(t_game *game, int x, t_wall_info wall);
 int		get_wall_color(double distance);
 void	draw_directional_textured_wall(t_game *game, int x, t_wall_info wall, t_ray *ray);
-int		get_texture_for_direction(t_game *game, int wall_direction, int **tex_data, int *tex_width, int *tex_height);
+int		get_texture_for_direction(t_game *game, int wall_direction, t_texture_info *tex);
+int		get_texture_for_direction_north_south(t_game *game, int wall_direction, t_texture_info *tex);
+int		get_texture_for_direction_east_west(t_game *game, int wall_direction, t_texture_info *tex);
 void	draw_solid_wall(t_game *game, int x, t_wall_info wall, int color);
 
+double	cast_ray_and_get_distance(t_game *game, double ray_angle, int *wall_dir, t_hit_pos *hit);
+void	init_ray_values(t_game *game, double ray_angle, t_ray_cast *cast);
+void	determine_wall_direction(t_ray_cast *cast, int map_x, int prev_map_x, int *wall_dir);
+void	ray_cast_loop(t_ray_cast *cast, t_game *game);
 
 #endif

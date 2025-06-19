@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:00:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/19 05:00:15 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/19 16:01:08 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	draw_ceiling_and_floor(t_game *game)
 	draw_floor(game, floor_color);
 }
 
-
 void	render_scene(t_game *game)
 {
 	int	x;
@@ -35,8 +34,6 @@ void	render_scene(t_game *game)
 		draw_wall_slice(game, x, &game->rays[x]);
 		x++;
 	}
-#ifdef BONUS
-	draw_minimap(game);
-#endif
+	//draw_minimap_if_bonus(game);
 	mlx_put_image_to_window(game->mlx, game->mlx_win, game->img, 0, 0);
 }

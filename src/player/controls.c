@@ -41,7 +41,9 @@ int	game_loop(t_game *game)
 	cast_rays(game);
 	render_scene(game);
 #ifdef BONUS
+
 	draw_minimap(game);
+
 #endif
 	return (0);
 }

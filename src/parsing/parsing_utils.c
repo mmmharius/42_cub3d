@@ -1,6 +1,17 @@
 
-#include "cub3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/19 00:00:00 by mpapin            #+#    #+#             */
+/*   Updated: 2025/06/19 00:00:00 by mpapin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "cub3d.h"
 
 void	free_map_array(char **map_array, int height)
 {
@@ -49,7 +60,6 @@ void	free_parsing_data(t_map *map)
 	}
 }
 
-
 int	find_map_width(char **map_array, int height)
 {
 	int	i;
@@ -68,7 +78,6 @@ int	find_map_width(char **map_array, int height)
 	return (max_width);
 }
 
-
 int	count_map_lines(char *map_path)
 {
 	int		fd;
@@ -79,7 +88,7 @@ int	count_map_lines(char *map_path)
 	if (fd == -1)
 		return (0);
 	count = 0;
-	while ((ligne = get_next_line(fd)) != NULL)
+	while ((ligne = get_next_line(fd)))
 	{
 		if (is_map_line(ligne))
 			count++;

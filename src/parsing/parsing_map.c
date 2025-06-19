@@ -41,7 +41,7 @@ void	allocate_and_copy_map(t_map *map, char **temp_map)
 
 	map->map = malloc(sizeof(char *) * map->height);
 	if (!map->map)
-		return;
+		return ;
 	i = 0;
 	while (i < map->height)
 	{
@@ -53,8 +53,8 @@ void	allocate_and_copy_map(t_map *map, char **temp_map)
 void	store_map_line(char *ligne, char **temp_map, int *line_count)
 {
 	temp_map[*line_count] = ft_strdup(ligne);
-	if (temp_map[*line_count] && 
-		temp_map[*line_count][ft_strlen(temp_map[*line_count]) - 1] == '\n')
+	if (temp_map[*line_count]
+		&& temp_map[*line_count][ft_strlen(temp_map[*line_count]) - 1] == '\n')
 		temp_map[*line_count][ft_strlen(temp_map[*line_count]) - 1] = '\0';
 	(*line_count)++;
 }
@@ -63,6 +63,6 @@ void	init_temp_map(char ***temp_map, int *first_map_line)
 {
 	*temp_map = malloc(sizeof(char *) * 1000);
 	if (!*temp_map)
-		return;
+		return ;
 	*first_map_line = 0;
 }

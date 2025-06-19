@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_background.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 05:30:00 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/19 05:30:00 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/19 15:39:30 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	get_ceiling_color(t_game *game)
 {
 	if (game && game->map_data)
 	{
-		return (rgb_to_color(game->map_data->r_plafond, 
-			game->map_data->g_plafond, game->map_data->b_plafond));
+		return (rgb_to_color(game->map_data->r_plafond,
+				game->map_data->g_plafond, game->map_data->b_plafond));
 	}
 	else
 		return (0x87CEEB);
@@ -27,8 +27,8 @@ int	get_floor_color(t_game *game)
 {
 	if (game && game->map_data)
 	{
-		return (rgb_to_color(game->map_data->r_sol, 
-			game->map_data->g_sol, game->map_data->b_sol));
+		return (rgb_to_color(game->map_data->r_sol,
+				game->map_data->g_sol, game->map_data->b_sol));
 	}
 	else
 		return (0x8B4513);
