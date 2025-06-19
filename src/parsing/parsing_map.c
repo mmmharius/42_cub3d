@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_map.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 05:30:00 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/19 05:31:15 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/19 19:41:35 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	process_map_end(t_map *map, char **temp_map, int line_count)
 {
 	int	i;
 
+	i = 0;
 	if (line_count > 0)
 	{
 		map->height = line_count;
@@ -30,8 +31,8 @@ void	process_map_end(t_map *map, char **temp_map, int line_count)
 			i++;
 		}
 		allocate_and_copy_map(map, temp_map);
-		ft_free_tab(temp_map);
 		map->assigned_map = 1;
+		free_map_array(temp_map, map->height);
 	}
 }
 
