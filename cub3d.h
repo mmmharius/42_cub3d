@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:04:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/19 18:16:50 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/19 19:46:23 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,41 +30,35 @@
 # define FOV 60
 # define RAYS_COUNT SCREEN_WIDTH
 
-#ifdef BONUS
-# define MINIMAP_SIZE 200
-# define MINIMAP_SCALE 10
-# define COLLISION_MARGIN 0.3
-#endif
+# define KEY_W 119
+# define KEY_S 115
+# define KEY_A 97
+# define KEY_D 100
+# define KEY_LEFT 65361
+# define KEY_RIGHT 65363
+# define KEY_ESC 65307
 
-#define KEY_W 119
-#define KEY_S 115
-#define KEY_A 97
-#define KEY_D 100
-#define KEY_LEFT 65361
-#define KEY_RIGHT 65363
-#define KEY_ESC 65307
+# define KEY_W_MAC 13
+# define KEY_S_MAC 1
+# define KEY_A_MAC 0
+# define KEY_D_MAC 2
+# define KEY_LEFT_MAC 123
+# define KEY_RIGHT_MAC 124
+# define KEY_ESC_MAC 53
 
-#define KEY_W_MAC 13
-#define KEY_S_MAC 1
-#define KEY_A_MAC 0
-#define KEY_D_MAC 2
-#define KEY_LEFT_MAC 123
-#define KEY_RIGHT_MAC 124
-#define KEY_ESC_MAC 53
+# define WALL_NORTH 0
+# define WALL_SOUTH 1
+# define WALL_WEST 2
+# define WALL_EAST 3
 
-#define WALL_NORTH 0
-#define WALL_SOUTH 1
-#define WALL_WEST 2
-#define WALL_EAST 3
-
-typedef struct	s_player
+typedef struct s_player
 {
 	double	x;
 	double	y;
 	double	angle;
 }	t_player;
 
-typedef struct	s_map
+typedef struct s_map
 {
 	char		**map;
 	int			width;
@@ -86,7 +80,7 @@ typedef struct	s_map
 	int			assigned_map;
 }	t_map;
 
-typedef struct	s_ray
+typedef struct s_ray
 {
 	double	angle;
 	double	distance;
@@ -96,7 +90,7 @@ typedef struct	s_ray
 	double	hit_y;
 }	t_ray;
 
-typedef struct	s_game
+typedef struct s_game
 {
 	void		*mlx;
 	void		*mlx_win;
@@ -221,11 +215,10 @@ void	rotate_right(t_game *game);
 int		is_wall(t_game *game, int x, int y);
 void	init_ray_values(t_game *game, double ray_angle, t_ray_cast *cast);
 double	calculate_distance(double x1, double y1, double x2, double y2);
-void	determine_wall_direction(t_ray_cast *cast, int map_x, int prev_map_x, int *wall_dir);
+void	determine_wall_direction(t_ray_cast *cast, int map_x, int prev_map_x,
+			int *wall_dir);
 void	perform_ray_loop(t_game *game, t_ray_cast *cast);
 double	cast_single_ray(t_game *game, double ray_angle, int *wall_dir);
-double	cast_single_ray_with_pos(t_game *game, double ray_angle,
-			int *wall_dir, double *hit_x, double *hit_y);
 void	calculate_ray_data(t_game *game, int i, double ray_angle);
 
 // rendering
@@ -243,7 +236,6 @@ int		get_texture_for_direction(t_game *game, int wall_direction,
 int		get_wall_color(double distance);
 void	draw_solid_wall(t_game *game, int x, t_wall_info wall, int color);
 
-
 int		game_loop(t_game *game);
 void	put_pixel(t_game *game, int x, int y, int color);
 double	normalize_angle(double angle);
@@ -253,7 +245,7 @@ int		rgb_to_color(int r, int g, int b);
 
 // parsing
 int		parsing(char *map_path, t_map *map);
-int 	check_cub(char *map_path);
+int		check_cub(char *map_path);
 int		catch_all(char *map_path, t_map *map);
 void	assign_texture(char *ligne, t_map *map);
 void	assign_color(char *ligne, t_map *map);
@@ -286,7 +278,8 @@ int		check_colors_range(t_map *map);
 int		check_map_characters(char **map_array, int height);
 int		check_map_borders(char **map_array, int height, int width);
 int		check_map_enclosed(char **map_array, int height, int width);
-int		check_walls_flood_fill(char **map, int player_x, int player_y, int height);
+int		check_walls_flood_fill(char **map, int player_x, int player_y,
+			int height);
 void	print_map_debug(t_map *map);
 int		verify_map_complete(t_map *map);
 int		check_texture_file(char *texture_path, char *direction);
@@ -301,15 +294,21 @@ int		validate_map_characters(char **map_array, int height);
 
 void	draw_textured_wall(t_game *game, int x, t_wall_info wall);
 int		get_wall_color(double distance);
-void	draw_directional_textured_wall(t_game *game, int x, t_wall_info wall, t_ray *ray);
-int		get_texture_for_direction(t_game *game, int wall_direction, t_texture_info *tex);
-int		get_texture_for_direction_north_south(t_game *game, int wall_direction, t_texture_info *tex);
-int		get_texture_for_direction_east_west(t_game *game, int wall_direction, t_texture_info *tex);
+void	draw_directional_textured_wall(t_game *game, int x, t_wall_info wall,
+			t_ray *ray);
+int		get_texture_for_direction(t_game *game, int wall_direction,
+			t_texture_info *tex);
+int		get_texture_for_direction_north_south(t_game *game, int wall_direction,
+			t_texture_info *tex);
+int		get_texture_for_direction_east_west(t_game *game, int wall_direction,
+			t_texture_info *tex);
 void	draw_solid_wall(t_game *game, int x, t_wall_info wall, int color);
 
-double	cast_ray_and_get_distance(t_game *game, double ray_angle, int *wall_dir, t_hit_pos *hit);
+double	cast_ray_and_get_distance(t_game *game, double ray_angle, int *wall_dir,
+			t_hit_pos *hit);
 void	init_ray_values(t_game *game, double ray_angle, t_ray_cast *cast);
-void	determine_wall_direction(t_ray_cast *cast, int map_x, int prev_map_x, int *wall_dir);
+void	determine_wall_direction(t_ray_cast *cast, int map_x, int prev_map_x,
+			int *wall_dir);
 void	ray_cast_loop(t_ray_cast *cast, t_game *game);
 
 #endif

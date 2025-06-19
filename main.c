@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:03:50 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/19 05:00:23 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/19 19:43:56 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	main(int argc, char **argv)
 {
 	t_game	game;
 	t_map	map;
-	
+
 	if (argc != 2)
 	{
 		write(2, "Error : Cub3d needs a map\n", 26);
