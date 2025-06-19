@@ -57,11 +57,17 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	if (parsing(argv[1], &map))
+	{
+		free_parsing_data(&map);
 		return (1);
+	}
 	init_game(&game, &map);
 	init_window(&game);
 	if (!game.mlx || !game.mlx_win || !game.img)
+	{
+		free_parsing_data(&map);
 		return (1);
+	}
 	load_map_textures(&game, &map);
 	cast_rays(&game);
 	render_scene(&game);

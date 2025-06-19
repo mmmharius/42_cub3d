@@ -6,7 +6,7 @@
 /*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:04:00 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/19 19:46:23 by aberenge         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:00:30 by aberenge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,9 +160,6 @@ typedef struct s_hit_pos
 	double	y;
 }	t_hit_pos;
 
-int		can_move_with_collision(t_game *game, double new_x, double new_y);
-void	draw_minimap(t_game *game);
-
 int		close_hook(t_game *game);
 void	cleanup_game(t_game *game);
 void	cleanup_game2(t_game *game);
@@ -265,7 +262,6 @@ void	process_line(char *ligne, t_map *map);
 void	free_parsing_data(t_map *map);
 void	free_map_array(char **map_array, int height);
 void	init_map_struct(t_map *map);
-int		test_parsing_main(char *map_path);
 int		store_map_data(char *map_path, t_map *map);
 int		count_map_lines(char *map_path);
 char	**allocate_map_array(char *map_path, t_map *map);
