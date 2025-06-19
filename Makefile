@@ -28,7 +28,8 @@ SRCS		= main.c src/exit/exit.c src/init.c \
 				src/init/init_game.c src/init/init_window.c src/init/init_map.c src/init/init_player.c \
 				src/init/load_textures.c src/init/load_textures2.c \
 				src/raycasting/raycasting.c src/raycasting/render.c src/raycasting/render_utils.c \
-				src/raycasting/render_utils2.c src/raycasting/render_utils3.c \
+				src/raycasting/render_utils2.c src/raycasting/render_utils3.c src/raycasting/render_pixel.c \
+				src/raycasting/render_color.c src/raycasting/render_texture.c \
 				src/raycasting/ray_utils.c src/raycasting/ray_utils2.c src/raycasting/ray_cast.c src/raycasting/draw_background.c src/raycasting/draw_walls.c \
 				src/player/controls.c src/player/controls_utils.c src/player/movement.c src/player/rotation.c \
 			  src/parsing/parsing.c src/parsing/parsing_utils.c src/parsing/parsing_utils2.c src/parsing/verif.c \
@@ -40,7 +41,8 @@ BONUS_SRCS	= main.c src/exit/exit.c src/init.c \
 				src/init/init_game.c src/init/init_window.c src/init/init_map.c src/init/init_player.c \
 				src/init/load_textures.c src/init/load_textures2.c \
 				src/raycasting/raycasting.c src/raycasting/render.c src/raycasting/render_utils.c \
-				src/raycasting/render_utils2.c src/raycasting/render_utils3.c \
+				src/raycasting/render_utils2.c src/raycasting/render_utils3.c src/raycasting/render_pixel.c \
+				src/raycasting/render_color.c src/raycasting/render_texture.c \
 				src/raycasting/ray_utils.c src/raycasting/ray_utils2.c src/raycasting/ray_cast.c src/raycasting/draw_background.c src/raycasting/draw_walls.c \
 				src/player/controls.c src/player/controls_utils.c src/player/movement.c src/player/rotation.c \
 			  src/parsing/parsing.c src/parsing/parsing_utils.c src/parsing/parsing_utils2.c src/parsing/verif.c \

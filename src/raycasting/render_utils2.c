@@ -37,17 +37,18 @@ int	calculate_tex_x(t_ray *ray, int tex_width)
 void	draw_texture_column(t_game *game, int x,
 		t_wall_info wall, t_texture_info tex)
 {
-	int	y;
-	int	tex_y;
-	int	color;
+	int		y;
+	int		tex_y;
+	int		color;
+	double	step;
 
+	step = (double)tex.height / wall.height;
 	y = wall.start;
 	while (y <= wall.end && y < SCREEN_HEIGHT)
 	{
 		if (y >= 0)
 		{
-			tex_y = (int)((double)(y - wall.start)
-					*tex.height / wall.height);
+			tex_y = (int)((y - wall.start) * step);
 			if (tex_y >= 0 && tex_y < tex.height
 				&& tex.x >= 0 && tex.x < tex.width)
 			{

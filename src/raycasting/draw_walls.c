@@ -15,12 +15,14 @@
 static t_wall_info	calc_wall_dimensions(double distance)
 {
 	t_wall_info	wall;
+	double		precise_height;
 
 	if (distance == 0)
 		distance = 1;
-	wall.height = (int)(SCREEN_HEIGHT / distance * TILE_SIZE);
+	precise_height = SCREEN_HEIGHT / distance * TILE_SIZE;
+	wall.height = (int)(precise_height + 0.5);
 	wall.start = (SCREEN_HEIGHT - wall.height) / 2;
-	wall.end = wall.start + wall.height;
+	wall.end = wall.start + wall.height - 1;
 	return (wall);
 }
 
