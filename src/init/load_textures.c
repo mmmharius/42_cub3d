@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 05:30:00 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/19 05:32:19 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/19 19:48:56 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	load_north_texture(t_game *game, t_map *map)
 					&bpp, &line_len, &endian);
 		else
 		{
-			write(2, "Error: Cannot load north texture\n", 33);
+			write(2, "Error\nCannot load north texture\n", 33);
 			cleanup_game(game);
 			exit(1);
 		}
@@ -64,7 +64,7 @@ void	load_south_texture(t_game *game, t_map *map)
 					&bpp, &line_len, &endian);
 		else
 		{
-			write(2, "Error: Cannot load south texture\n", 33);
+			write(2, "Error\n Cannot load south texture\n", 33);
 			cleanup_game(game);
 			exit(1);
 		}
@@ -86,7 +86,7 @@ void	load_west_texture(t_game *game, t_map *map)
 					&bpp, &line_len, &endian);
 		else
 		{
-			write(2, "Error: Cannot load west texture\n", 32);
+			write(2, "Error\n Cannot load west texture\n", 32);
 			cleanup_game(game);
 			exit(1);
 		}

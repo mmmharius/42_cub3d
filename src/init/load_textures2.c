@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 05:30:00 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/19 05:32:27 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/19 19:48:56 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	load_east_texture(t_game *game, t_map *map)
 					&bpp, &line_len, &endian);
 		else
 		{
-			write(2, "Error: Cannot load east texture\n", 32);
+			write(2, "Error\n Cannot load east texture\n", 32);
 			cleanup_game(game);
 			exit(1);
 		}
