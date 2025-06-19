@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:13:43 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/13 00:03:13 by aberenge         ###   ########.fr       */
+/*   Updated: 2025/06/19 05:30:28 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ void	cleanup_game(t_game *game)
 		mlx_destroy_image(game->mlx, game->we_texture);
 		game->we_texture = NULL;
 	}
+}
+
+void	cleanup_game2(t_game *game)
+{
 	if (game->ea_texture && game->mlx)
 	{
 		mlx_destroy_image(game->mlx, game->ea_texture);
@@ -57,11 +61,11 @@ void	cleanup_game(t_game *game)
 	{
 		mlx_destroy_window(game->mlx, game->mlx_win);
 		game->mlx_win = NULL;
+		game->mlx = NULL;
 	}
 	if (game->mlx)
 	{
-		mlx_destroy_display(game->mlx);
 		free(game->mlx);
-		game->mlx = NULL;
+		mlx_destroy_display(game->mlx);
 	}
 }

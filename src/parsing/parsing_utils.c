@@ -49,29 +49,6 @@ void	free_parsing_data(t_map *map)
 	}
 }
 
-void	init_map_struct(t_map *map)
-{
-	if (!map)
-		return ;
-	map->map = NULL;
-	map->width = 0;
-	map->height = 0;
-	map->no_texture = NULL;
-	map->so_texture = NULL;
-	map->we_texture = NULL;
-	map->ea_texture = NULL;
-	map->r_plafond = 0;
-	map->g_plafond = 0;
-	map->b_plafond = 0;
-	map->r_sol = 0;
-	map->g_sol = 0;
-	map->b_sol = 0;
-	map->color_plafond = 0;
-	map->color_sol = 0;
-	map->assigned_texture = 0;
-	map->assigned_color = 0;
-	map->assigned_map = 0;
-}
 
 int	find_map_width(char **map_array, int height)
 {
@@ -91,12 +68,6 @@ int	find_map_width(char **map_array, int height)
 	return (max_width);
 }
 
-int	store_map_data(char *map_path, t_map *map)
-{
-	(void)map_path;
-	(void)map;
-	return (0);
-}
 
 int	count_map_lines(char *map_path)
 {
@@ -133,3 +104,4 @@ char	**allocate_map_array(char *map_path, t_map *map)
 	map_array[lines] = NULL;
 	return (map_array);
 }
+

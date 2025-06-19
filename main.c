@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:03:50 by aberenge          #+#    #+#             */
-/*   Updated: 2025/06/12 14:37:26 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/19 05:00:23 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,12 @@
 
 void	init_game(t_game *game, t_map *map)
 {
-	game->mlx = NULL;
-	game->mlx_win = NULL;
-	game->img = NULL;
-	game->addr = NULL;
-	game->win_width = SCREEN_WIDTH;
-	game->win_height = SCREEN_HEIGHT;
+	init_game_mlx(game);
+	init_game_window(game);
 	game->map_data = map;
-	game->wall_texture = NULL;
-	game->wall_data = NULL;
-	game->tex_width = 0;
-	game->tex_height = 0;
-	game->no_texture = NULL;
-	game->so_texture = NULL;
-	game->we_texture = NULL;
-	game->ea_texture = NULL;
-	game->no_tex_data = NULL;
-	game->so_tex_data = NULL;
-	game->we_tex_data = NULL;
-	game->ea_tex_data = NULL;
-	game->no_tex_width = 0;
-	game->no_tex_height = 0;
-	game->so_tex_width = 0;
-	game->so_tex_height = 0;
-	game->we_tex_width = 0;
-	game->we_tex_height = 0;
-	game->ea_tex_width = 0;
-	game->ea_tex_height = 0;
+	init_game_textures(game);
+	init_game_directional_textures(game);
+	init_game_texture_dimensions(game);
 	ft_bzero(game->keys, sizeof(game->keys));
 	init_map(game);
 	init_player(game);
@@ -49,49 +28,22 @@ void	init_game(t_game *game, t_map *map)
 
 void	init_window(t_game *game)
 {
-	game->mlx = mlx_init();
+	init_mlx(game);
 	if (!game->mlx)
 		return ;
-	game->mlx_win = mlx_new_window(game->mlx, game->win_width,
-		game->win_height, "CUB3D");
+	create_window(game);
 	if (!game->mlx_win)
 	{
 		cleanup_game(game);
 		return ;
 	}
-	game->img = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	create_image(game);
 	if (!game->img)
 	{
 		cleanup_game(game);
 		return ;
 	}
-	game->addr = mlx_get_data_addr(game->img, &game->bits_per_pixel,
-		&game->line_length, &game->endian);
-	mlx_hook(game->mlx_win, 17, 1L << 17, close_hook, game);
-	mlx_hook(game->mlx_win, 2, 1L << 0, key_press_hook, game);
-	mlx_hook(game->mlx_win, 3, 1L << 1, key_release_hook, game);
-	mlx_loop_hook(game->mlx, game_loop, game);
-}
-
-void	print_parsing_info(t_map *map)
-{
-	int i;
-	
-	printf("Textures:\n");
-	printf("  NO: %s", map->no_texture ? map->no_texture : "NULL");
-	printf("  SO: %s", map->so_texture ? map->so_texture : "NULL");
-	printf("  WE: %s", map->we_texture ? map->we_texture : "NULL");
-	printf("  EA: %s", map->ea_texture ? map->ea_texture : "NULL");
-	printf("Map (%dx%d):\n", map->width, map->height);
-	if (map->map)
-	{
-		i = 0;
-		while (i < map->height)
-		{
-			printf("%s\n", map->map[i]);
-			i++;
-		}
-	}
+	setup_hooks(game);
 }
 
 int	main(int argc, char **argv)
@@ -106,9 +58,6 @@ int	main(int argc, char **argv)
 	}
 	if (parsing(argv[1], &map))
 		return (1);
-	
-	print_parsing_info(&map);
-	
 	init_game(&game, &map);
 	init_window(&game);
 	if (!game.mlx || !game.mlx_win || !game.img)

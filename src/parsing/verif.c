@@ -6,7 +6,7 @@
 /*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 00:00:00 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/14 01:08:08 by mpapin           ###   ########.fr       */
+/*   Updated: 2025/06/19 05:00:01 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,14 @@
 
 int	check_texture_files(t_map *map)
 {
-	int	fd;
-
 	if (!map->no_texture || !map->so_texture || !map->we_texture || !map->ea_texture)
 	{
 		printf("Error\nMissing texture files\n");
 		return (1);
 	}
-	fd = open(map->no_texture, O_RDONLY);
-	if (fd == -1)
-	{
-		printf("Error\nCannot open NO texture: %s\n", map->no_texture);
+	if (check_north_texture(map) || check_south_texture(map) ||
+		check_west_texture(map) || check_east_texture(map))
 		return (1);
-	}
-	close(fd);
-	fd = open(map->so_texture, O_RDONLY);
-	if (fd == -1)
-	{
-		printf("Error\nCannot open SO texture: %s\n", map->so_texture);
-		return (1);
-	}
-	close(fd);
-	fd = open(map->we_texture, O_RDONLY);
-	if (fd == -1)
-	{
-		printf("Error\nCannot open WE texture: %s\n", map->we_texture);
-		return (1);
-	}
-	close(fd);
-	fd = open(map->ea_texture, O_RDONLY);
-	if (fd == -1)
-	{
-		printf("Error\nCannot open EA texture: %s\n", map->ea_texture);
-		return (1);
-	}
-	close(fd);
 	return (0);
 }
 
@@ -75,33 +48,11 @@ int	check_colors_range(t_map *map)
 
 int	check_map_characters(char **map_array, int height)
 {
-	int	i;
-	int	j;
 	int	player_count;
 
-	i = 0;
-	player_count = 0;
-	while (i < height)
-	{
-		j = 0;
-		while (map_array[i][j])
-		{
-			if (map_array[i][j] != '0' && map_array[i][j] != '1' &&
-				map_array[i][j] != ' ' && map_array[i][j] != 'N' &&
-				map_array[i][j] != 'S' && map_array[i][j] != 'E' &&
-				map_array[i][j] != 'W')
-			{
-				printf("Error\nInvalid character in map: '%c' at [%d][%d]\n",
-					map_array[i][j], i, j);
-				return (1);
-			}
-			if (map_array[i][j] == 'N' || map_array[i][j] == 'S' ||
-				map_array[i][j] == 'E' || map_array[i][j] == 'W')
-				player_count++;
-			j++;
-		}
-		i++;
-	}
+	if (validate_map_characters(map_array, height))
+		return (1);
+	player_count = count_players_in_map(map_array, height);
 	if (player_count != 1)
 	{
 		printf("Error\nMap must have exactly one player (found %d)\n", player_count);

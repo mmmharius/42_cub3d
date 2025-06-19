@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aberenge <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpapin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 13:13:49 by mpapin            #+#    #+#             */
-/*   Updated: 2025/06/14 14:59:54 by aberenge         ###   ########.fr       */
+/*   Updated: 2025/06/19 05:35:43 by mpapin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 int	parsing(char *map_path, t_map *map)
 {
 	init_map_struct(map);
-	if (check_cub(map_path) || catch_all(map_path, map) || store_map_data(map_path, map) || verify_parsing(map))
+	if (check_cub(map_path) || catch_all(map_path, map)
+			|| store_map_data(map_path, map) || verify_parsing(map))
 		return (1);
 	else
 		return (0);
@@ -41,140 +42,37 @@ int	check_cub(char *map_path)
 
 void	assign_texture(char *ligne, t_map *map)
 {
-	char	*texture_path;
-	int		len;
-
 	if (ft_strncmp(ligne, "NO ", 3) == 0)
-	{
-		texture_path = ft_strdup(ligne + 3);
-		len = ft_strlen(texture_path);
-		if (len > 0 && texture_path[len - 1] == '\n')
-			texture_path[len - 1] = '\0';
-		map->no_texture = texture_path;
-	}
+		assign_north_texture(ligne, map);
 	else if (ft_strncmp(ligne, "SO ", 3) == 0)
-	{
-		texture_path = ft_strdup(ligne + 3);
-		len = ft_strlen(texture_path);
-		if (len > 0 && texture_path[len - 1] == '\n')
-			texture_path[len - 1] = '\0';
-		map->so_texture = texture_path;
-	}
+		assign_south_texture(ligne, map);
 	else if (ft_strncmp(ligne, "WE ", 3) == 0)
-	{
-		texture_path = ft_strdup(ligne + 3);
-		len = ft_strlen(texture_path);
-		if (len > 0 && texture_path[len - 1] == '\n')
-			texture_path[len - 1] = '\0';
-		map->we_texture = texture_path;
-	}
+		assign_west_texture(ligne, map);
 	else if (ft_strncmp(ligne, "EA ", 3) == 0)
-	{
-		texture_path = ft_strdup(ligne + 3);
-		len = ft_strlen(texture_path);
-		if (len > 0 && texture_path[len - 1] == '\n')
-			texture_path[len - 1] = '\0';
-		map->ea_texture = texture_path;
-	}
+		assign_east_texture(ligne, map);
 	if (map->no_texture && map->so_texture && map->we_texture && map->ea_texture)
 	{
 		map->assigned_texture = 1;
 	}
 }
 
-void	assign_color(char *ligne, t_map *map)
-{
-	char	**color;
-
-	if (ligne[0] == 'F')
-	{
-		color = ft_split(&ligne[2], ",");
-		if (color && color[0] && color[1] && color[2])
-		{
-			map->r_sol = ft_atoi(color[0]);
-			map->g_sol = ft_atoi(color[1]);
-			map->b_sol = ft_atoi(color[2]);
-			map->color_sol = 1;
-		}
-		ft_free_tab(color);
-	}
-	else if (ligne[0] == 'C')
-	{
-		color = ft_split(&ligne[2], ",");
-		if (color && color[0] && color[1] && color[2])
-		{
-			map->r_plafond = ft_atoi(color[0]);
-			map->g_plafond = ft_atoi(color[1]);
-			map->b_plafond = ft_atoi(color[2]);
-			map->color_plafond = 1;
-		}
-		ft_free_tab(color);
-	}
-	if (map->color_plafond && map->color_sol)
-	{
-		map->assigned_color = 1;
-	}
-}
 
 void	assign_map(char *ligne, t_map *map)
 {
 	static int	first_map_line = 1;
 	static int	line_count = 0;
 	static char	**temp_map = NULL;
-	int			i;
 
 	if (ligne == NULL)
 	{
-		if (line_count > 0)
-		{
-			map->height = line_count;
-			map->width = 0;
-
-			i = 0;
-			while (i < line_count)
-			{
-				if (temp_map[i] && (int)ft_strlen(temp_map[i]) > map->width)
-				{
-					map->width = (int)ft_strlen(temp_map[i]);
-				}
-				i++;
-			}
-
-			map->map = malloc(sizeof(char *) * map->height);
-			if (!map->map)
-				return;
-
-			i = 0;
-			while (i < map->height)
-			{
-				map->map[i] = temp_map[i];
-				i++;
-			}
-
-			free(temp_map);
-			map->assigned_map = 1;
-		}
+		process_map_end(map, temp_map, line_count);
 		return;
 	}
-
 	if (!is_map_line(ligne))
-	{
 		return;
-	}
-
 	if (first_map_line)
-	{
-		temp_map = malloc(sizeof(char *) * 1000);
-		if (!temp_map)
-			return;
-		first_map_line = 0;
-	}
-
-	temp_map[line_count] = ft_strdup(ligne);
-	if (temp_map[line_count] && temp_map[line_count][ft_strlen(temp_map[line_count]) - 1] == '\n')
-		temp_map[line_count][ft_strlen(temp_map[line_count]) - 1] = '\0';
-
-	line_count++;
+		init_temp_map(&temp_map, &first_map_line);
+	store_map_line(ligne, temp_map, &line_count);
 }
 
 
@@ -217,11 +115,12 @@ int	catch_all(char *map_path, t_map *map)
 			free(ligne);
 			continue;
 		}
-		else if (!map->assigned_texture)
+		if (ft_strncmp(ligne, "NO ", 3) == 0 || ft_strncmp(ligne, "SO ", 3) == 0 ||
+			ft_strncmp(ligne, "WE ", 3) == 0 || ft_strncmp(ligne, "EA ", 3) == 0)
 			assign_texture(ligne, map);
-		else if (!map->assigned_color)
+		else if (ligne[0] == 'F' || ligne[0] == 'C')
 			assign_color(ligne, map);
-		else if (!map->assigned_map)
+		else if (is_map_line(ligne))
 			assign_map(ligne, map);
 		free(ligne);
 	}

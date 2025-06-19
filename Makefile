@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aberenge <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: mpapin <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/03 14:30:00 by aberenge          #+#    #+#              #
-#    Updated: 2025/06/13 15:58:21 by aberenge         ###   ########.fr        #
+#    Updated: 2025/06/19 05:00:27 by mpapin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,11 +25,28 @@ SRCDIR		= src
 OBJDIR		= obj
 
 SRCS		= main.c src/exit/exit.c src/init.c \
+				src/init/init_game.c src/init/init_window.c src/init/init_map.c src/init/init_player.c \
+				src/init/load_textures.c src/init/load_textures2.c \
 				src/raycasting/raycasting.c src/raycasting/render.c src/raycasting/render_utils.c \
-				src/player/controls.c src/player/controls_utils.c \
-			  src/parsing/parsing.c src/parsing/parsing_utils.c src/parsing/verif.c libs/gnl/get_next_line.c
+				src/raycasting/ray_utils.c src/raycasting/ray_cast.c src/raycasting/draw_background.c src/raycasting/draw_walls.c \
+				src/player/controls.c src/player/controls_utils.c src/player/movement.c src/player/rotation.c \
+			  src/parsing/parsing.c src/parsing/parsing_utils.c src/parsing/verif.c \
+			  src/parsing/parsing_texture.c src/parsing/parsing_color.c src/parsing/parsing_map.c src/parsing/store_map.c \
+			  src/parsing/verif_texture.c src/parsing/verif_map.c libs/gnl/get_next_line.c
+
+BONUS_SRCS	= main.c src/exit/exit.c src/init.c \
+				src/init/init_game.c src/init/init_window.c src/init/init_map.c src/init/init_player.c \
+				src/init/load_textures.c src/init/load_textures2.c \
+				src/raycasting/raycasting.c src/raycasting/render.c src/raycasting/render_utils.c \
+				src/raycasting/ray_utils.c src/raycasting/ray_cast.c src/raycasting/draw_background.c src/raycasting/draw_walls.c \
+				src/player/controls.c src/player/controls_utils.c src/player/movement.c src/player/rotation.c \
+			  src/parsing/parsing.c src/parsing/parsing_utils.c src/parsing/verif.c \
+			  src/parsing/parsing_texture.c src/parsing/parsing_color.c src/parsing/parsing_map.c src/parsing/store_map.c \
+			  src/parsing/verif_texture.c src/parsing/verif_map.c \
+			  src/bonus/minimap_bonus.c libs/gnl/get_next_line.c
 
 OBJS		= $(SRCS:%.c=$(OBJDIR)/%.o)
+BONUS_OBJS	= $(BONUS_SRCS:%.c=$(OBJDIR)/%.o)
 
 all: $(LIBFT) $(MLX) $(NAME)
 
@@ -45,10 +62,21 @@ $(MLX):
 $(OBJDIR):
 			@echo "Compiling all .c"
 			@mkdir -p $(OBJDIR)/src
+			@mkdir -p $(OBJDIR)/src/init
+			@mkdir -p $(OBJDIR)/src/parsing
+			@mkdir -p $(OBJDIR)/src/raycasting
+			@mkdir -p $(OBJDIR)/src/player
+			@mkdir -p $(OBJDIR)/src/exit
+			@mkdir -p $(OBJDIR)/src/bonus
+			@mkdir -p $(OBJDIR)/libs/gnl
 
 $(OBJDIR)/%.o: %.c | $(OBJDIR)
 			@mkdir -p $(dir $@)
 			@$(CC) $(CFLAGS) $(INCDIR) -c $< -o $@
+
+$(OBJDIR)/src/bonus/%.o: src/bonus/%.c | $(OBJDIR)
+			@mkdir -p $(dir $@)
+			@$(CC) $(CFLAGS) -DBONUS $(INCDIR) -c $< -o $@
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
 			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX) $(MLX_FLAGS) -o $(NAME)
@@ -68,7 +96,11 @@ fclean: clean
 
 re: fclean all
 
+bonus: $(LIBFT) $(MLX) $(BONUS_OBJS)
+			@$(CC) $(CFLAGS) -DBONUS $(BONUS_OBJS) $(LIBFT) $(MLX) $(MLX_FLAGS) -o $(NAME)
+			@echo "$(NAME) compiled with bonus features!"
+
 mac:
 			@$(MAKE) MLX_DIR=libs/minilibx_macos MLX_FLAGS="-framework OpenGL -framework AppKit" all
 
-.PHONY: all clean fclean re mac
+.PHONY: all clean fclean re mac bonus
