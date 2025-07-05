@@ -1,4 +1,5 @@
 # CUB3D ![CUB3D](https://img.shields.io/badge/Game-CUB3D-blue) ![42](https://img.shields.io/badge/42-Project-brightgreen)
+Real-time 3D visualization using raycasting, textures, and keyboard input – 42 project
 
 ## 📝 Description
 
